@@ -52,10 +52,46 @@ echo '
       xmlns:w="urn:schemas-microsoft-com:office:word"
       xmlns="http://www.w3.org/TR/REC-html40">
 
-<head><meta charset="utf-8"></head>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .label {
+            vertical-align: top;
+            width: 20%;
+        }
+
+        .separator {
+            vertical-align: top;
+            width: 5%;
+            padding-right: 10px; /* Menyesuaikan jarak setelah tanda titik dua */
+        }
+
+        .content {
+            vertical-align: top;
+            width: 75%;
+        }
+
+        td {
+            padding: 2px; /* Menyesuaikan padding antar teks */
+        }
+
+        .table-border {
+            width: 100%;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 2px;
+        }
+
+        .table-border td, .table-border th {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
 <body>
 <center>Form Bukti Kunjungan</center>
-<table width="100%" border="1" cellspacing=0 cellpadding=2>
+<table class="table-border">
 <tbody>
   <tr>
     <td rowspan="2"><center>No</center></td>
