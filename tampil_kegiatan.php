@@ -25,10 +25,15 @@ $sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tangga
         JOIN pegawai p ON ad.created_by = p.nip
         WHERE ad.date = '$date'";
 
+
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $activity = $result->fetch_assoc();
+    echo "<pre>";
+print_r($activity);
+echo "</pre>";
+
 } else {
     echo "Tidak ada kegiatan yang ditemukan untuk tanggal ini!";
     exit();
