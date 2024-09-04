@@ -82,7 +82,6 @@ $conn->close();
             <input type="text" id="password" name="password" required>
 
             <button type="submit" class="btn btn-save">Simpan</button>
-            <a href="pegawai.php" class="btn btn-print">Batal</a>
         </form>
     </div>
 </body>

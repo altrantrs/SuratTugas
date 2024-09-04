@@ -5,12 +5,12 @@ session_start();
 // Set header for JSON
 header('Content-Type: application/json');
 
-$nip = $_SESSION["nip"];
+$nip = isset($_GET["nip"]) ? $_GET["nip"] : $_SESSION["nip"];
 $level = $_SESSION["level"];
 
-if ($level == "Administrator") {
-    // If the user is an Administrator, fetch all dates
-    $sql = "SELECT date FROM activity_dates";
+if ($nip == "all") {
+    // If "Semua Pegawai" is selected, fetch all dates
+    $sql = "SELECT DISTINCT date FROM activity_dates";
 } else {
     // Otherwise, fetch dates specific to the user
     $sql = "SELECT date FROM activity_dates WHERE created_by = '$nip'";

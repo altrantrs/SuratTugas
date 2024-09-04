@@ -62,15 +62,15 @@ $result = $conn->query($sql);
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Fungsi</th>
-                        <th>Kode Kegiatan</th>
-                        <th>Kegiatan</th>
-                        <th>Nomor Surat</th>
-                        <th>Tanggal Surat</th>
-                        <th>Tujuan</th>
-                        <th>Jadwal</th>
-                        <th>Aksi</th>
+                        <th width='1%'>No</th>
+                        <th width='5%'>Fungsi</th>
+                        <th width='5%'>Kode Kegiatan</th>
+                        <th width='10%'>Kegiatan</th>
+                        <th width='5%'>Nomor Surat</th>
+                        <th width='5%'>Tanggal Surat</th>
+                        <th width='5%'>Tujuan</th>
+                        <th width='5%'>Jadwal</th>
+                        <th width='7%'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

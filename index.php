@@ -41,6 +41,84 @@ if ($_SESSION['level'] == "Administrator") {
     ?>
 
     <main>
+        <!-- <table>
+      <tr style='color:#fff;'>
+         <td align='center' bgcolor='#3db2e1'>Tahun</td>
+         <td align='center' bgcolor='#3db2e1'>Bulan</td>
+         <td align='center' bgcolor='#3db2e1'>Pegawai</td>
+         <td align='center' rowspan='2'><button id="proses" name="proses" onclick="cari();">Tampil</button></td>
+         <td align='center' rowspan='2'><button id="excel" name="excel" onclick="excel();">Excel</button></td>
+      </tr>
+      <tr>
+         <td>
+            <select id="tahun" name="tahun">
+               <option selected>--Pilih--</option>
+               <option value="2024">2024</option>
+            </select>
+         </td>
+         <td>
+            <select id="bulan" name="bulan">
+               <option selected>--Pilih--</option>
+               <option value="01">Januari</option>
+               <option value="1">Februari</option>
+                <option value="2">Maret</option>
+                <option value="3">April</option>
+                <option value="4">Mei</option>
+                <option value="5">Juni</option>
+                <option value="6">Juli</option>
+                <option value="7">Agustus</option>
+                <option value="8">September</option>
+                <option value="9">Oktober</option>
+                <option value="10">November</option>
+                <option value="11">Desember</option>
+            </select>
+         </td>
+         <td>
+            <select id="nip" name="nip">
+               <option selected>--Pilih--</option>
+               <?php
+                if ($_SESSION['level'] == "Administrator") {
+                    echo '<option value="all">Semua Pegawai</option>';
+                }
+                while ($res = mysqli_fetch_array($result)) {
+                    echo "<option value=" . $res['nip'] . ">" . $res['nama'] . "</option>";
+                }
+                ?>
+            </select>
+         </td>
+      </tr>
+   </table>
+   <br>
+   <span id="data"></span>
+   <br>
+   <ul>.</ul>
+   <script>
+   function cari() {
+      var t = document.getElementById("tahun").value;
+      var b = document.getElementById("bulan").value;
+      var n = document.getElementById("nip").value;
+
+      if (t=="--Pilih--" || b=="--Pilih--" || n=="--Pilih--") {
+         alert("Isian tahun, bulan dan pegawai harus diisi.");
+      } else {
+         var tahun = document.getElementById('tahun').value;
+         var bulan = document.getElementById('bulan').value;
+         var nip = document.getElementById('nip').value;
+         
+         var xhttp;
+         xhttp = new XMLHttpRequest();
+         xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               document.getElementById("data").innerHTML = this.responseText;
+            }
+         };
+         document.getElementById("data").innerHTML = "<center><img src='images/loading.gif'/></center>";
+         xhttp.open("GET", "showmatriks.php?tahun="+tahun+"&bulan="+bulan+"&nip="+nip, true);
+         xhttp.send();   
+      }
+   }
+   </script> -->
+
         <div class="filter">
             <label for="month-select">Bulan</label>
             <select id="month-select" onchange="generateCalendar()">
@@ -57,65 +135,59 @@ if ($_SESSION['level'] == "Administrator") {
                 <option value="10">November</option>
                 <option value="11">Desember</option>
             </select>
+            </div>
             <div class="employee-name">
                 <?php if ($_SESSION['level'] == "Administrator") { ?>
                     <select id="nip" name="nip">
                         <option selected>--Pilih--</option>
-                        <option value="all">Semua Pegawai</option>
-                        <?php while ($res = mysqli_fetch_array($result)) { ?>
-                            <option value="<?php echo $res['nip']; ?>">
-                                <?php echo $res['nama']; ?>
-                            </option>
-                        <?php } ?>
+                        <?php
+                        if ($_SESSION['level'] == "Administrator") {
+                            echo '<option value="all">Semua Pegawai</option>';
+                        }
+                        while ($res = mysqli_fetch_array($result)) {
+                            echo "<option value=" . $res['nip'] . ">" . $res['nama'] . "</option>";
+                        }
+                        ?>
                     </select>
+                    <br>
+                    <span id="data"></span>
+                    <br>
+                    <ul>.</ul>
+                    </div>
                 <?php } else { ?>
                     <div><?php echo $_SESSION["user"]; ?></div>
+                    <div class="calendar">
+                        <div class="days" id="days-container">
+                        </div>
+                    </div>
                 <?php } ?>
-            </div>
-        </div>
-
-        <div class="calendar">
-            <div class="days" id="days-container">
-                <!-- Days will be generated here by JavaScript -->
-            </div>
-        </div>
-
-        <h2>Daftar Pegawai dan Kegiatan</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Kegiatan</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $counter = 1;
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $pegawai_nip = $row['nip'];
-                    $activities = getActivities($conn, $pegawai_nip);
-                    echo "<tr>";
-                    echo "<td>{$counter}</td>";
-                    echo "<td>{$row['nama']}</td>";
-                    echo "<td>";
-                    if (count($activities) > 0) {
-                        foreach ($activities as $activity) {
-                            echo "<div>";
-                            echo "Tanggal: " . $activity['date'] . " - Kegiatan: " . $activity['activity_id'];
-                            echo "</div>";
-                        }
-                    } else {
-                        echo "Tidak ada kegiatan";
-                    }
-                    echo "</td>";
-                    echo "</tr>";
-                    $counter++;
-                }
-                ?>
-            </tbody>
-        </table>
     </main>
+    <script>
+        function cari() {
+            var t = document.getElementById("tahun").value;
+            var b = document.getElementById("bulan").value;
+            var n = document.getElementById("nip").value;
+
+            if (t == "--Pilih--" || b == "--Pilih--" || n == "--Pilih--") {
+                alert("Isian tahun, bulan dan pegawai harus diisi.");
+            } else {
+                var tahun = document.getElementById('tahun').value;
+                var bulan = document.getElementById('bulan').value;
+                var nip = document.getElementById('nip').value;
+
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("data").innerHTML = this.responseText;
+                    }
+                };
+                document.getElementById("data").innerHTML = "<center><img src='images/loading.gif'/></center>";
+                xhttp.open("GET", "showmatriks.php?tahun=" + tahun + "&bulan=" + bulan + "&nip=" + nip, true);
+                xhttp.send();
+            }
+        }
+    </script>
 
     <script src="script.js"></script>
 </body>

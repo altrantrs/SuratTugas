@@ -162,6 +162,7 @@ $conn->close();
 
         if (dayDifference >= 10) {
             reportButton.disabled = true; // Disable the button
+            reportButton.style.cursor = 'not-allowed'
             reportButton.title = "Button disabled as it's been more than 10 days after the activity date.";
         }
     });
