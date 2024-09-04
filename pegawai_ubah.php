@@ -73,7 +73,7 @@ $conn->close();
             <main>
                 <section class="allocation">
                     <div class="form-container">
-                        <form id="activity-form" action="update_pegawai.php?id=<?= $pegawai['id']; ?>" method="POST">
+                        <form id="activity-form" action="pegawai_ubah.php?id=<?= $pegawai['id']; ?>" method="POST">
                             <label for="nip">NIP Baru</label>
                             <input type="text" id="nip" name="nip" value="<?= htmlspecialchars($pegawai['nip']); ?>" required>
 

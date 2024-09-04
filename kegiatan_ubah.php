@@ -74,7 +74,7 @@ $conn->close();
     <section class="allocation">
         <div class="form-container">
             <div class="container">
-                <form id="activity-form" action="update_activity.php?id<?= $activity['id']; ?>" method="POST">
+                <form id="activity-form" action="kegiatan_ubah.php?id<?= $activity['id']; ?>" method="POST">
                     <input type="hidden" name="id" value="<?= $activity['id']; ?>">
 
                     <label for="fungsi">Fungsi</label>

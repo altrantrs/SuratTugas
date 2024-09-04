@@ -76,5 +76,5 @@ function getDaysInMonth(month, year) {
 function openForm(day, month, year) {
     const selectedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
     localStorage.setItem('selectedDate', selectedDate);
-    window.location.href = 'tambah_kegiatan.php';
+    window.location.href = 'perjalanan_tambah.php';
 }

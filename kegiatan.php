@@ -88,7 +88,7 @@ $result = $conn->query($sql);
                             echo "<td>" . $row['tujuan_kegiatan'] . "</td>";
                             echo "<td>" . $row['jadwal'] . "</td>";
                             echo "<td>";
-                            echo "<a href='update_activity.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> ";
+                            echo "<a href='kegiatan_ubah.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> ";
                             echo "<a href='#' class='btn-delete' onclick='deleteActivity(" . $row['id'] . "); return false;'><i class='fas fa-trash-alt'></i> Hapus</a>";
                             echo "</td>";
                             echo "</tr>";
@@ -104,7 +104,7 @@ $result = $conn->query($sql);
     <script>
         function deleteActivity(id) {
             if (confirm('Anda yakin ingin menghapus kegiatan ini?')) {
-                fetch('hapus_kegiatan.php', {
+                fetch('kegiatan_hapus.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'

@@ -45,7 +45,7 @@ if ($_SESSION['level'] == "Administrator") {
         <main>
             <section class="allocation">
                 <div class="form-container">
-                    <form id="activity-form" action="settingssave.php" method="post">
+                    <form id="activity-form" action="pengaturan_simpan.php" method="post">
                         <table cellspacing="0" cellpadding="5">
                             <?php
                             // Fetch current settings

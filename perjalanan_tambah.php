@@ -125,7 +125,7 @@ $conn->close();
                     console.log(`${key}: ${value}`);
                 }
 
-                fetch('simpan_kegiatan.php', {
+                fetch('perjalanan_simpan.php', {
                         method: 'POST',
                         body: formData
                     })

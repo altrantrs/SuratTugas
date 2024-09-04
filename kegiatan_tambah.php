@@ -35,7 +35,7 @@ $conn->close();
     <h2>Tambah Kegiatan</h2>
     <main>
         <section class="form-container">
-            <form action="save_activity.php" method="POST">
+            <form action="kegiatan_simpan.php" method="POST">
 
                 <label for="fungsi">Fungsi</label>
                 <select id="fungsi" name="fungsi" required>
@@ -52,16 +52,16 @@ $conn->close();
                 <input type="text" id="kegiatan" name="kegiatan" required>
 
                 <label for="nomor-surat">Nomor Surat</label>
-                <input type="text" id="nomor-surat" name="nomor-surat">
+                <input type="text" id="nomor-surat" name="nomor-surat" required>
                 
                 <label for="tanggal-surat">Tanggal Surat</label>
-                <input type="date" id="tanggal-surat" name="tanggal-surat">
+                <input type="date" id="tanggal-surat" name="tanggal-surat" required>
 
                 <label for="tujuan-kegiatan">Tujuan Kegiatan</label>
-                <input type="text" id="tujuan-kegiatan" name="tujuan-kegiatan">
+                <input type="text" id="tujuan-kegiatan" name="tujuan-kegiatan" required>
 
                 <label for="jadwal">Jadwal</label>
-                <input type="text" id="jadwal" name="jadwal">
+                <input type="text" id="jadwal" name="jadwal" required>
 
                 <button type="submit" class="btn btn-save">Simpan</button>
             </form>

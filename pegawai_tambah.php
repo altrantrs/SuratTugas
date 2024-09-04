@@ -53,7 +53,7 @@ $conn->close();
         <main>
         <section class="allocation">
         <div class="form-container">            
-        <form id="activity-form" action="tambah_pegawai.php" method="POST">
+        <form id="activity-form" action="pegawai_tambah.php" method="POST">
             <label for="nip">NIP Baru</label>
             <input type="text" id="nip" name="nip" required>
 

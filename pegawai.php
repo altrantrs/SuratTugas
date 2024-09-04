@@ -44,7 +44,7 @@ $result = $conn->query($sql);
                 <input type="text" name="keyword" id="keyword" placeholder="Masukkan keyword pencarian..." autocomplete="off">
             </div>
             <div class="tambah">
-                <a href="tambah_pegawai.php" class="hero-btn">Tambah Pegawai</a>
+                <a href="pegawai_tambah.php" class="hero-btn">Tambah Pegawai</a>
             </div>
         </div>
         <main>
@@ -75,7 +75,7 @@ $result = $conn->query($sql);
                             echo "<td>" . htmlspecialchars($row['golongan']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['pangkat']) . "</td>";
                             echo "<td>";
-                            echo "<a href='update_pegawai.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> ";
+                            echo "<a href='pegawai_ubah.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> ";
                             echo "<a href='#' class='btn-delete' onclick='deletePegawai(" . $row['id'] . "); return false;'><i class='fas fa-trash-alt'></i> Hapus</a>";
                             echo "</td>";
                             echo "</tr>";
@@ -91,7 +91,7 @@ $result = $conn->query($sql);
     <script>
         function deletePegawai(id) {
             if (confirm('Anda yakin ingin menghapus pegawai ini?')) {
-                fetch('hapus_pegawai.php', {
+                fetch('pegawai_hapus.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
