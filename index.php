@@ -1,11 +1,3 @@
-<!-- 
-Warning: Undefined variable $res in D:\xampp\htdocs\Surat\index.php on line 151
-
-Warning: Trying to access array offset on value of type null in D:\xampp\htdocs\Surat\index.php on line 151 
-
-Fatal error: Uncaught mysqli_sql_exception: Table 'surat.libur' doesn't exist in D:\xampp\htdocs\Surat\showmatriks.php:20 Stack trace: #0 D:\xampp\htdocs\Surat\showmatriks.php(20): mysqli_query(Object(mysqli), 'SELECT * FROM l...') #1 {main} thrown in D:\xampp\htdocs\Surat\showmatriks.php on line 20
-
--->
 
 <?php
 session_start();
@@ -50,39 +42,6 @@ if ($_SESSION['level'] == "Administrator") {
     ?>
 
     <main>
-        <!-- 
-   <br>
-   <span id="data"></span>
-   <br>
-   <ul>.</ul>
-   <script>
-   function cari() {
-      var t = document.getElementById("tahun").value;
-      var b = document.getElementById("bulan").value;
-      var n = document.getElementById("nip").value;
-
-      if (t=="--Pilih--" || b=="--Pilih--" || n=="--Pilih--") {
-         alert("Isian tahun, bulan dan pegawai harus diisi.");
-      } else {
-         var tahun = document.getElementById('tahun').value;
-         var bulan = document.getElementById('bulan').value;
-         var nip = document.getElementById('nip').value;
-         
-         var xhttp;
-         xhttp = new XMLHttpRequest();
-         xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-               document.getElementById("data").innerHTML = this.responseText;
-            }
-         };
-         document.getElementById("data").innerHTML = "<center><img src='images/loading.gif'/></center>";
-         xhttp.open("GET", "showmatriks.php?tahun="+tahun+"&bulan="+bulan+"&nip="+nip, true);
-         xhttp.send();   
-      }
-   }
-   </script> -->
-
-
         <div>
             <?php if ($_SESSION['level'] == "Administrator") { ?>
                 <table>
@@ -138,7 +97,6 @@ if ($_SESSION['level'] == "Administrator") {
                 <ul>.</ul>
         </div>
     <?php } else { ?>
-        <div><?php echo $_SESSION["user"]; ?></div>
         <div class="filter">
             <label for="month-select">Bulan</label>
             <select id="month-select" onchange="generateCalendar()">
@@ -156,9 +114,9 @@ if ($_SESSION['level'] == "Administrator") {
                 <option value="11">Desember</option>
             </select>
         </div>
-        <div class="employee-name"> 
-            <?php echo ''.$res['nama'] .''?>
-        </div>
+        <!-- <div class="employee-name"> 
+        <?php echo $_SESSION["user"]; ?>
+        </div> -->
         <div class="calendar">
             <div class="days" id="days-container">
             </div>
