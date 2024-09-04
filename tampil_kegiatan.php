@@ -19,10 +19,11 @@ if (empty($date)) {
 $formattedDate = date('d F Y', strtotime($date));
 
 // Query untuk mengambil detail kegiatan berdasarkan tanggal dan created_by
-$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity
+$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity, p.nama as pelaksana
         FROM activity_dates ad
         JOIN activities a ON ad.activity_id = a.id
-        WHERE ad.date = '$date' AND ad.created_by = '$nip'";
+        JOIN pegawai p ON ad.created_by = p.nip
+        WHERE ad.date = '$date'";
 
 $result = $conn->query($sql);
 
@@ -54,13 +55,15 @@ $conn->close();
         <main>
             <h2>Detail Kegiatan</h2>
             <section class="activity-details">
-                <p><strong>Tanggal:</strong> <?= htmlspecialchars($formattedDate); ?></p>
-                <p><strong>Kegiatan:</strong> <?= htmlspecialchars($activity['activity']); ?></p>
-                <p><strong>Nomor Surat:</strong> <?= htmlspecialchars($activity['nomor_surat']); ?></p>
-                <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
-                <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
-                <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
-            </section>
+    <p><strong>Tanggal:</strong> <?= htmlspecialchars($formattedDate); ?></p>
+    <p><strong>Kegiatan:</strong> <?= htmlspecialchars($activity['activity']); ?></p>
+    <p><strong>Nomor Surat:</strong> <?= htmlspecialchars($activity['nomor_surat']); ?></p>
+    <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
+    <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
+    <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
+    <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana']); ?></p> <!-- Display the executor's name -->
+</section>
+
 
             <div class="buttons">
                 <button class="btn btn-delete" onclick="deleteActivity()"> Hapus Kegiatan </button>
