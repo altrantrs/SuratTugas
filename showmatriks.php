@@ -1,60 +1,3 @@
-<!-- tanggal sudah muncul namun
-at" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
-
-Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
-
-Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
-
-Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
-
-Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
-
-Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
-
-Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
-
-Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
-
-Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
- -->
 <?php
 session_start();
 
@@ -128,31 +71,31 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
         $sql = "SELECT * FROM activity_dates WHERE created_by='$nip' AND date='$current_date'";
         $result2 = mysqli_query($conn, $sql);
 
-        if ($result2->num_rows > 0) {
+        if ($result2 && mysqli_num_rows($result2) > 0) {
             $res = mysqli_fetch_array($result2);
 
-            $nosurat = $res['nosurat'];
-            $tglsurat = $res['tglsurat'];
-            $jabatan = $res['jabatan'];
-            $id_kegiatan = $res['activity_id'];
-            $periode = $res['periode'];
-            $tujuan = $res['tempat'];
-            $status = $res['status'];
-            $id = $res['id'];
+            $nosurat = isset($res['nosurat']) ? $res['nosurat'] : '';
+            $tglsurat = isset($res['tglsurat']) ? $res['tglsurat'] : '';
+            $jabatan = isset($res['jabatan']) ? $res['jabatan'] : '';
+            $id_kegiatan = isset($res['activity_id']) ? $res['activity_id'] : '';
+            $periode = isset($res['periode']) ? $res['periode'] : '';
+            $tempat = isset($res['tempat']) ? $res['tempat'] : '';
+            $status = isset($res['status']) ? $res['status'] : '';
+            $id = isset($res['id']) ? $res['id'] : '';
             $result3 = mysqli_query($conn, "SELECT * FROM activities WHERE id='$id_kegiatan'");
             $res3 = mysqli_fetch_array($result3);
 
             if ($_SESSION['level'] == "Administrator") {
                 if ($status == "1") {
-                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tujuan','$periode','$status','$id');\" class='tanggal3' title='" . $res3['id'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button><img src='images/delete.png' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
+                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tempat','$periode','$status','$id');\" class='tanggal3' title='" . $res3['id'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button><img src='images/delete.png' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
                 } else {
-                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tujuan','$periode','$status','$id');\" class='tanggal1' title='" . $res3['id'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button><img src='images/delete.png' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
+                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tempat','$periode','$status','$id');\" class='tanggal1' title='" . $res3['id'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button><img src='images/delete.png' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
                 }
             } else {
                 if ($status == "1") {
-                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal3' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
+                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal3' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
                 } else {
-                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal1' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
+                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal1' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
                 }
             }
         } else {
