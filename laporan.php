@@ -117,212 +117,165 @@ echo '
 <html xmlns:o="urn:schemas-microsoft-com:office:office"
       xmlns:w="urn:schemas-microsoft-com:office:word"
       xmlns="http://www.w3.org/TR/REC-html40">
+
 <head>
     <meta charset="utf-8">
-    <title>Surat Tugas</title>
     <style>
-    body {
-        font-family: "Bookman Old Style", serif;
-        margin: 0; /* Menghilangkan margin default pada body */
-        padding: 0; /* Menghilangkan padding default pada body */
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        border: none; /* Menghilangkan border pada tabel */
-    }
-    th, td {
-        padding: 5px;
-        text-align: left;
-        vertical-align: top;
-        // border: none; /* Menghilangkan border pada sel */
-        background-color: transparent; 
-    }
-    .center {
-        text-align: center;
-    }
-    p {
-        margin: 0; 
-        line-height: 1.0;
-    }
-    .no-spacing {
-        margin: 0;
-        padding: 0;
-    }
-</style>
+        .label {
+            vertical-align: top;
+            width: 20%;
+        }
 
+        .separator {
+            vertical-align: top;
+            width: 5%;
+            padding-right: 10px; /* Menyesuaikan jarak setelah tanda titik dua */
+        }
+
+        .content {
+            vertical-align: top;
+            width: 75%;
+        }
+
+        td {
+            padding: 2px; /* Menyesuaikan padding antar teks */
+        }
+
+        .table-border {
+            width: 100%;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 2px;
+        }
+
+        .table-border td, .table-border th {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="center" style=font-family:Arial>
-    <img src="http://webapps.bps.go.id/wonogirikab/translok/images/bps.png" width=70 height=50 ><br><br>
-        <p><b>BADAN PUSAT STATISTIK</b><br>
-        <b>KABUPATEN WONOGIRI</b></p>
-    </div>
-    <br>
-    <center>
-        <p>SURAT TUGAS<br>
-        NOMOR '.htmlspecialchars($nosurat).'</p>
-    </center>
-
-
-    <table border="0">
-        <tr>
-            <td width: 10px >Menimbang</td>
-            <td width: 3px > : </td>
-            <td width: 50px>
-                <ol type="a">
-                    <li>bahwa dalam rangka Pelaksanaan Surat Tugas '.htmlspecialchars($keg['activity']).' di Badan Pusat Statistik Kabupaten Wonogiri Provinsi Jawa Tengah, maka diperlukan penunjukan untuk melaksanakan kegiatan tersebut;</li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td>Mengingat</td>
-            <td> :</td>
-            <td>
-                <ol type="1">
-                    <li>Peraturan Pemerintah Nomor 30 Tahun 2019 tentang Penilaian Kinerja Pegawai Negeri Sipil;</li>
-                    <li>Peraturan Menteri Pendayagunaan Aparatur Negara dan Reformasi Birokrasi Nomor 8 Tahun 2021 tentang Sistem Manajemen Kinerja Pegawai Negeri Sipil;</li>
-                    <li>Peraturan Badan Pusat Statistik Nomor 7 Tahun 2020 tentang Organisasi dan Tata Kerja Badan Pusat Statistik; dan</li>
-                    <li>Peraturan Badan Pusat Statistik Nomor 8 Tahun 2020 tentang Organisasi dan Tata Kerja Badan Pusat Statistik Provinsi dan Badan Pusat Statistik Kabupaten/Kota.</li>
-                </ol>
-            </td>
-        </tr>
-    </table>
-
-    <br>
-<center>
-    <p class="text-center">Memberi Tugas</p>
-    </center>
-    <table>
-        <tr>
-            <td width: 5px>Kepada</td>
-            <td width: 3px>:</td>
-            <td width: 50px>'.htmlspecialchars($peg['nama']).'</td>
-        </tr>
-        <tr>
-            <td>Jabatan</td>
-            <td>:</td>
-            <td>'.htmlspecialchars($peg['jabatan']).'</td>
-        </tr>
-        <tr>
-            <td>Untuk</td>
-            <td>:</td>
-            <td>Melakukan '.htmlspecialchars($keg['activity']).'</td>
-        </tr>
-        <tr>
-            <td>Jadwal</td>
-            <td>:</td>
-            <td>'.htmlspecialchars($prj['jadwal']).'</td>
-        </tr>
-    </table>
-
-    <br>
-
-    <table border="0" width="100%">
-        <tr>
-            <td width="60%"></td>
-            <td width="40%">
-            <center>    
-            Wonogiri, '.htmlspecialchars($tanggalFormat).'<br>
-                '.htmlspecialchars($mengetahui).' Kabupaten Wonogiri<br>
-                    Nomor SP: '.htmlspecialchars($nosurat).'
-                    <br><br><br><br><br>
-                    '.htmlspecialchars($namattd).'
-                </center>
-            </td>
-        </tr>
-    </table>
-
-    <br><br><br>
-    <table width="100%" border="0" cellspacing=0 cellpadding=2>
-        <tr>
-            <td width="60%"></td>
-            <td width="40%">
-                <center>
-                    <p style="text-align:left;">Lampiran Surat Tugas</p>
-                    <p style="text-align:left;">Nomor   : '.htmlspecialchars($nosurat).'</p>
-                    <p style="text-align:left;">Tanggal : '.htmlspecialchars($tanggalFormat).'</p>
-                </center>
-            </td>
-        </tr>
-    </table>
+<center>Form Bukti Kunjungan</center>
+<table class="table-border">
+<tbody>
+  <tr>
+    <td rowspan="2"><center>No</center></td>
+    <td rowspan="2"><center>Pelaksana</center></td>
+    <td rowspan="2"><center>Hari</center></td>
+    <td rowspan="2"><center>Tanggal</center></td>
+    <td colspan="3"><center>Pejabat/Petugas yang mengesahkan</center></td>
+  </tr>
+  <tr>
+    <td>Nama</td>
+    <td>Jabatan</td>
+    <td>Tanda Tangan</td>
+  </tr>
+  <tr>
+    <td><center>[1]</center></td>
+    <td><center>[2]</center></td>
+    <td><center>[3]</center></td>
+    <td><center>[4]</center></td>
+    <td><center>[5]</center></td>
+    <td><center>[6]</center></td>
+    <td><center>[7]</center></td>
+  </tr>
+  <tr>
+    <td>
+        1<br><br><br><br><br><br><br><br><br><br>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>
+        2<br><br><br><br><br><br><br><br><br><br>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>
+        3<br><br><br><br><br><br><br><br><br><br>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
 <br>
-    <center>Form Bukti Kunjungan</center>
-    <table width="100%" border="1" cellspacing=0 cellpadding=2>
-    <tbody>
-      <tr>
-        <td rowspan="2"><center>No</center></td>
-        <td rowspan="2"><center>Pelaksana</center></td>
-        <td rowspan="2"><center>Hari</center></td>
-        <td rowspan="2"><center>Tanggal</center></td>
-        <td colspan="3"><center>Pejabat/Petugas yang mengesahkan</center></td>
-      </tr>
-      <tr>
-        <td>Nama</td>
-        <td>Jabatan</td>
-        <td>Tanda Tangan</td>
-      </tr>
-      <tr>
-        <td><center>[1]</center></td>
-        <td><center>[2]</center></td>
-        <td><center>[3]</center></td>
-        <td><center>[4]</center></td>
-        <td><center>[5]</center></td>
-        <td><center>[6]</center></td>
-        <td><center>[7]</center></td>
-      </tr>
-      <tr>
-        <td>
-           <center> 1 </center> <br><br><br><br><br><br><br><br><br><br>
+<table border="0" width="100%">
+    <tr>
+        <td width="60%"></td>
+        <td width="40%">
+            <center>
+                Mengetahui,<br>
+                '.$mengetahui.'<br>
+                Kabupaten Wonogiri<br><br><br><br><br>
+                '.$namattd.'
+            </center>
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-            <center> 2 </center> <br><br><br><br><br><br><br><br><br><br>
+    </tr>
+
+</table>
+<br><br><br>
+<center>
+
+<img src="http://webapps.bps.go.id/wonogirikab/translok/images/bps.png" width=70 height=50 ><br><br>
+BADAN PUSAT STATISTIK KABUPATEN WONOGIRI <BR><BR>
+SURAT TUGAS<BR>
+NOMOR: '.$nosurat.'<BR><BR>
+
+<table border="0">
+
+    <tr><td width="20%" style="vertical-align:top;">Menimbang</td><td width="5%" style="vertical-align:top;">:</td><td style="vertical-align:top;">'.$keg['menimbang'].'</td></tr>
+    <tr><td style="vertical-align:top;">Mengingat</td><td style="vertical-align:top;">:</td><td style="vertical-align:top;">'.$keg['mengingat'].'</td></tr>
+    <tr><td style="text-align:center;" colspan="3">Menugaskan:</td></tr>
+    <tr><td style="vertical-align:top;">Kepada</td><td style="vertical-align:top;">:</td><td style="vertical-align:top;">'.$peg['nama'].'</td></tr>
+    <tr><td style="vertical-align:top;">Jabatan</td><td style="vertical-align:top;">:</td><td style="vertical-align:top;">'.$prj['jabatan'].'</td></tr>
+    <tr><td style="vertical-align:top;">Untuk</td><td style="vertical-align:top;">:</td><td>Melaksanakan '.$keg['nama_kegiatan'].'</td></tr>
+    <tr><td style="vertical-align:top;">Jadwal</td><td style="vertical-align:top;">:</td><td style="vertical-align:top;">'.$prj['periode'].'</td></tr>
+
+</table>
+
+<br><br>
+<table border="0" width="100%">
+    <tr>
+        <td width="60%"></td>
+        <td width="40%">
+            <center>
+                Mengetahui,<br>
+                '.$mengetahui.'<br>
+                Kabupaten Wonogiri<br><br><br><br><br>
+                '.$namattd.'
+            </center>
         </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-            <center> 3 </center> <br><br><br><br><br><br><br><br><br><br>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-    </table>
-    <br>
-    <table border="0" width="100%">
-        <tr>
-            <td width="60%"></td>
-            <td width="40%">
-                <center>
-                    Mengetahui,<br>
-                    '.$mengetahui.'<br>
-                    Kabupaten Wonogiri<br><br><br><br><br>
-                    '.$namattd.'
-                </center>
-            </td>
-        </tr>
-    
-    </table>
-    <br><br><br>
-    <center>
+    </tr>
+
+</table>
+<br><br><br><br>
+Badan Pusat Statistik Kabupaten Wonogiri (Statistics of Wonogiri Regency)
+<br>
+Jl. Pelem II No. 8 Wonogiri 57612 Telp (0273) 321055, Faks (0273) 321055, E-Mail : bps3312@bps.go.id
+</center>
+<br>
+';
+
+
+
+echo'
 </body>
 </html>';
 ?>
