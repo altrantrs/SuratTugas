@@ -1,6 +1,60 @@
-<!-- 
+<!-- tanggal sudah muncul namun
+at" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
 
-Fatal error: Uncaught mysqli_sql_exception: Unknown column 'nip' in 'where clause' in D:\xampp\htdocs\Surat\showmatriks.php:81 Stack trace: #0 D:\xampp\htdocs\Surat\showmatriks.php(81): mysqli_query(Object(mysqli), 'SELECT * FROM a...') #1 D:\xampp\htdocs\Surat\showmatriks.php(32): harikerja('198712345678901...', '01', '2024', '2024/01/01', '2024/01/31', 'Andi Wijaya') #2 {main} thrown in D:\xampp\htdocs\Surat\showmatriks.php on line 81 -->
+Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
+
+Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
+
+Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
+
+Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
+
+Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
+
+Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
+
+Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
+
+Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
+
+Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
+
+Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
+
+Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
+
+Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
+
+Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
+
+Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
+
+Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
+
+Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
+
+Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
+
+Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 77
+
+Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 78
+
+Warning: Undefined array key "jabatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 79
+
+Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 81
+
+Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
+
+Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 83
+
+Warning: Undefined array key "nama_kegiatan" in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+ -->
 <?php
 session_start();
 
@@ -41,46 +95,37 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
     $akhir_tgl = strtotime($tgl_akhir);
 
     $waktu_temp = $awal_tgl;
-    $bul = bulan(date("m", $waktu_temp));
-    $tah = date("Y", $waktu_temp);
     echo "<tr><td>" . $nama . "</td>";
     while ($waktu_temp <= $akhir_tgl) {
+        $current_date = date("Y-m-d", $waktu_temp); // Format the current date
+
+        // Determine the day of the week for coloring
         $hari_tem = date("D", $waktu_temp);
         $hari_temp = date("d", $waktu_temp);
-        $bln_temp = date("D", $waktu_temp);
 
+        $bln_temp = date("D", $waktu_temp);
         if ($bln_temp == "Mon") {
             $bln_temp = "S";
-        }
-        if ($bln_temp == "Tue") {
+        } elseif ($bln_temp == "Tue") {
             $bln_temp = "S";
-        }
-        if ($bln_temp == "Wed") {
+        } elseif ($bln_temp == "Wed") {
             $bln_temp = "R";
-        }
-        if ($bln_temp == "Thu") {
+        } elseif ($bln_temp == "Thu") {
             $bln_temp = "K";
-        }
-        if ($bln_temp == "Fri") {
+        } elseif ($bln_temp == "Fri") {
             $bln_temp = "J";
-        }
-        if ($bln_temp == "Sat") {
+        } elseif ($bln_temp == "Sat") {
             $bln_temp = "S";
-        }
-        if ($bln_temp == "Sun") {
+        } elseif ($bln_temp == "Sun") {
             $bln_temp = "M";
         }
 
-        $whari = "";
-        if (($hari_tem == "Sun") || ($hari_tem == "Sat")) {
-            $whari = "pink";
-        } else {
-            $whari = "white";
-        }
+        $whari = ($hari_tem == "Sun" || $hari_tem == "Sat") ? "pink" : "white";
 
         include("db_connection.php");
 
-        $sql = "SELECT * FROM activity_dates WHERE nip='$nip' AND tanggal='$hari_temp' AND bulan='$bulan' AND tahun='$tahun'";
+        // Updated SQL query to match the date column
+        $sql = "SELECT * FROM activity_dates WHERE created_by='$nip' AND date='$current_date'";
         $result2 = mysqli_query($conn, $sql);
 
         if ($result2->num_rows > 0) {
@@ -89,7 +134,7 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
             $nosurat = $res['nosurat'];
             $tglsurat = $res['tglsurat'];
             $jabatan = $res['jabatan'];
-            $id_kegiatan = $res['id_kegiatan'];
+            $id_kegiatan = $res['activity_id'];
             $periode = $res['periode'];
             $tujuan = $res['tempat'];
             $status = $res['status'];
@@ -105,7 +150,7 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
                 }
             } else {
                 if ($status == "1") {
-                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal3' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
+                    echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal3' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
                 } else {
                     echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['nama_kegiatan'] . "');\" class='tanggal1' title='" . $res3['kode_kegiatan'] . " - " . $res3['nama_kegiatan'] . "'>" . $hari_temp . "</button> <img src='images/print.png' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tujuan','$periode');\"></td>";
                 }
@@ -120,7 +165,7 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
 
         $waktu_temp = strtotime("+1 day", $waktu_temp);
     }
-    $rekap = mysqli_query($conn, "SELECT count(id_kegiatan) as jum FROM activity_dates WHERE nip='$nip' and bulan='$bulan' and tahun='$tahun'");
+    $rekap = mysqli_query($conn, "SELECT count(activity_id) as jum FROM activity_dates WHERE created_by='$nip' and MONTH(date)='$bulan' and YEAR(date)='$tahun'");
     $resrekap = mysqli_fetch_array($rekap);
     $wrekap = "";
     if ($resrekap['jum'] > 0) {
@@ -136,20 +181,21 @@ function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
     echo "</tr>";
 }
 
-function bulan($bln){
-$bulan_array = array (
-"01" => "Januari",
-"02" => "Februari",
-"03" => "Maret",
-"04" => "April",
-"05" => "Mei",
-"06" => "Juni",
-"07" => "Juli",
-"08" => "Agustus",
-"09" => "September",
-"10" => "Oktober",
-"11" => "November",
-"12" => "Desember",
+function bulan($bln)
+{
+    $bulan_array = array(
+        "01" => "Januari",
+        "02" => "Februari",
+        "03" => "Maret",
+        "04" => "April",
+        "05" => "Mei",
+        "06" => "Juni",
+        "07" => "Juli",
+        "08" => "Agustus",
+        "09" => "September",
+        "10" => "Oktober",
+        "11" => "November",
+		"12" => "Desember",
 );
 return $bulan_array[$bln];
 }?>
