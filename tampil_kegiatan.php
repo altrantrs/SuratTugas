@@ -1,43 +1,37 @@
 <?php
 session_start();
 include_once("db_connection.php");
-
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
-    exit();
 }
 
+$result = null;
 $nip = $_SESSION["nip"];
+if ($_SESSION['level'] == "Administrator") {
+    $result = mysqli_query($conn, "SELECT * FROM pegawai ORDER BY nama");
+} else {
+    $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
+}
+
 $date = isset($_GET['date']) ? $_GET['date'] : '';
 
-if (empty($date)) {
-    echo "Tanggal tidak ditemukan!";
-    exit();
+// Format tanggal dalam format yang diinginkan
+$formattedDate = '';
+if (!empty($date)) {
+    $formattedDate = date('d F Y', strtotime($date));
 }
 
-// Format tanggal dalam format yang diinginkan
-$formattedDate = date('d F Y', strtotime($date));
-
-// Query untuk mengambil detail kegiatan berdasarkan tanggal dan created_by
-$sql = "SELECT ad.id as id_activity_date, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity, p.nama as pelaksana 
+$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity
         FROM activity_dates ad
         JOIN activities a ON ad.activity_id = a.id
-        JOIN pegawai p ON ad.created_by = p.nip
-        WHERE ad.date = '$date' AND ad.id = '$id'";
-
-
+        WHERE ad.date = '$date'";
 
 $result = $conn->query($sql);
 
+$activity = [];
+
 if ($result->num_rows > 0) {
     $activity = $result->fetch_assoc();
-    echo "<pre>";
-print_r($activity);
-echo "</pre>";
-
-} else {
-    echo "Tidak ada kegiatan yang ditemukan untuk tanggal ini!";
-    exit();
 }
 
 $conn->close();
@@ -61,15 +55,13 @@ $conn->close();
         <main>
             <h2>Detail Kegiatan</h2>
             <section class="activity-details">
-    <p><strong>Tanggal:</strong> <?= htmlspecialchars($formattedDate); ?></p>
-    <p><strong>Kegiatan:</strong> <?= htmlspecialchars($activity['activity']); ?></p>
-    <p><strong>Nomor Surat:</strong> <?= htmlspecialchars($activity['nomor_surat']); ?></p>
-    <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
-    <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
-    <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
-    <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana']); ?></p> <!-- Display the executor's name -->
-</section>
-
+                <p><strong>Tanggal:</strong> <?= htmlspecialchars($formattedDate); ?></p>
+                <p><strong>Kegiatan:</strong> <?= htmlspecialchars($activity['activity']); ?></p>
+                <p><strong>Nomor Surat:</strong> <?= htmlspecialchars($activity['nomor_surat']); ?></p>
+                <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
+                <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
+                <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
+            </section>
 
             <div class="buttons">
                 <button class="btn btn-delete" onclick="deleteActivity()"> Hapus Kegiatan </button>
@@ -88,6 +80,8 @@ $conn->close();
                     );">
                     Cetak Surat Tugas
                 </button>
+
+
             </div>
         </main>
     </div>
@@ -112,6 +106,10 @@ $conn->close();
                     })
                     .catch(error => console.error('Error:', error));
             }
+        }
+
+        function printReport() {
+            alert('Cetak Laporan button clicked!');
         }
 
         function printSuratTugas(kegiatan, nip, tahun, bulan, tanggal, nosurat, tglsurat, tujuan, periode) {
