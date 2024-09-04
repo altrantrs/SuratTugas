@@ -14,6 +14,9 @@ $prj = [
     'jadwal' => '1-30 Juni 2024'
 ];
 
+header("Content-type: application/vnd.ms-word");
+header("Content-Disposition: attachment;Filename=Laporan".$nama."-".$tanggal.$bulan.$tahun.".doc");
+
 echo '
 <html xmlns:o="urn:schemas-microsoft-com:office:office"
       xmlns:w="urn:schemas-microsoft-com:office:word"
