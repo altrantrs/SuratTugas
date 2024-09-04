@@ -50,7 +50,7 @@
                 <br>
                 <ul>.</ul>
 
-        <!-- </div>
+        </div>
         <div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
             <form id="savealokasi" name="savealokasi" class="modal-content">
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </form>
-        </div> -->
+        </div>
         <script>
             $(".chosen").chosen();
 

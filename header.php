@@ -12,7 +12,7 @@
         if ($_SESSION['level'] == "Administrator") {
             echo "<li><a href='kegiatan.php'>Kegiatan</a></li>";
             echo "<li><a href='pegawai.php'>Pegawai</a></li>";
-            echo "<li><a href='pengaturan.php'>Pengaturan</a></li>";
+            // echo "<li><a href='pengaturan.php'>Pengaturan</a></li>";
         }
         ?>
     </ul>

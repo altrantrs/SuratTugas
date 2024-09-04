@@ -115,7 +115,7 @@ $conn->close();
         function printSuratTugas(kegiatan, nip, tahun, bulan, tanggal, nosurat, tglsurat, tujuan, periode) {
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'coba.php';
+            form.action = 'laporan.php';
 
             form.appendChild(createInput('kegiatan', kegiatan));
             form.appendChild(createInput('nip', nip));
