@@ -79,6 +79,42 @@ if ($_SESSION['level'] == "Administrator") {
                 <!-- Days will be generated here by JavaScript -->
             </div>
         </div>
+
+        <h2>Daftar Pegawai dan Kegiatan</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Kegiatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $counter = 1;
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $pegawai_nip = $row['nip'];
+                    $activities = getActivities($conn, $pegawai_nip);
+                    echo "<tr>";
+                    echo "<td>{$counter}</td>";
+                    echo "<td>{$row['nama']}</td>";
+                    echo "<td>";
+                    if (count($activities) > 0) {
+                        foreach ($activities as $activity) {
+                            echo "<div>";
+                            echo "Tanggal: " . $activity['date'] . " - Kegiatan: " . $activity['activity_id'];
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "Tidak ada kegiatan";
+                    }
+                    echo "</td>";
+                    echo "</tr>";
+                    $counter++;
+                }
+                ?>
+            </tbody>
+        </table>
     </main>
 
     <script src="script.js"></script>
