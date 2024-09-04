@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_surat = $conn->real_escape_string($_POST['tanggal-surat']);
     $tujuan_kegiatan = $conn->real_escape_string($_POST['tujuan-kegiatan']);
     $jadwal = $conn->real_escape_string($_POST['jadwal']);
-    $created_by = $_SESSION['nip']; // Ambil NIP dari session
+    $created_by = $_SESSION['nip']; 
 
     // Cek apakah kombinasi kegiatan_id, tanggal_kegiatan, dan created_by sudah ada
     $checkSql = "SELECT id FROM activity_dates WHERE activity_id = '$kegiatan_id' AND date = '$tanggal_kegiatan' AND created_by = '$created_by'";

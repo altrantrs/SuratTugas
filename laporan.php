@@ -151,20 +151,20 @@ echo '
     .colon-align td:nth-child(2) {
         width: 3%;
         text-align: left;
-        padding-left: 10px; /* Adjust padding for better alignment */
+        padding-left: 10px; 
     }
     .colon-align td:nth-child(3) {
-        padding-left: 10px; /* Adjust padding for better alignment */
+        padding-left: 10px; 
     }
     ol {
         margin: 0;
-        padding-left: 15px; /* Adjust padding for list items */
+        padding-left: 15px; 
     }
 </style>
 
 </head>
 <body>
-    <div class="center" style="font-family: Arial; text-decoration:italic;">
+    <div class="center" style="font-family: Arial; font-style: italic;">
     <img src="http://webapps.bps.go.id/wonogirikab/translok/images/bps.png" width="70" height="50"><br><br>
         <p><b>BADAN PUSAT STATISTIK</b><br>
         <b>KABUPATEN WONOGIRI</b></p>

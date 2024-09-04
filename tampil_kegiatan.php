@@ -68,7 +68,7 @@ $conn->close();
                 <button class="btn btn-report" onclick="window.location.href='https://s.id/laporanjadi';">Cetak Laporan</button>
                 <button class="btn btn-print"
                     onclick="printSuratTugas(
-                        '<?= $activity['id_kegiatan'] ?>',  // Menggunakan id_kegiatan
+                        '<?= $activity['id_kegiatan'] ?>', 
                         '<?= $nip ?>',
                         '<?= date('Y', strtotime($activity['date'])) ?>',
                         '<?= date('m', strtotime($activity['date'])) ?>',
@@ -92,14 +92,16 @@ $conn->close();
                 fetch('perjalanan_hapus.php', {
                         method: 'POST',
                         body: new URLSearchParams({
-                            date: '<?= $date ?>'
+                            date: '<?= $date ?>',
+                            activity_id: '<?= $activity['id_kegiatan'] ?>'
+
                         })
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
                             alert(data.message);
-                            window.location.href = 'index.php'; // Redirect to index.php after deletion
+                            window.location.href = 'index.php'; 
                         } else {
                             alert("Error: " + data.message);
                         }

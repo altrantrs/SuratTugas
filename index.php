@@ -103,27 +103,11 @@ if ($_SESSION['level'] == "Administrator") {
         function del(id) {
             var xhttp;
             xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "perjalanan_hapus.php?date=" + id, true);
+            xhttp.open("GET", "berandadelete.php?id=" + id, true);
             xhttp.send();
             showtemp();
             document.getElementById('proses').click();
             document.getElementById('cancel').click();
-
-        }
-
-        function laporan(thn, bln, tgl, keg, n, nosurat, tglsurat, tujuan, periode) {
-
-            var tahun = thn;
-            var bulan = bln;
-            var tanggal = tgl;
-            var kegiatan = keg;
-            var nip = n;
-            var ns = nosurat;
-            var ts = tglsurat;
-            var t = tujuan;
-            var p = periode;
-
-            location.href = "tampil_kegiatan.php?tahun=" + tahun + "&bulan=" + bulan + "&tanggal=" + tanggal + "&kegiatan=" + kegiatan + "&nip=" + nip + "&nosurat=" + ns + "&tglsurat=" + ts + "&tujuan=" + t + "&periode=" + p;
 
         }
     </script>
