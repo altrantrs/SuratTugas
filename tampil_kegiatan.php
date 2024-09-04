@@ -139,6 +139,34 @@ $conn->close();
             return input;
         }
     </script>
+<script>
+    function calculateDateDifference(activityDate) {
+        const currentDate = new Date();
+        const dateParts = activityDate.split('-'); // Assuming activityDate is in 'YYYY-MM-DD' format
+        const activityDateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = currentDate - activityDateObj;
+
+        // Convert the time difference to days
+        const dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+        return dayDifference;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const activityDate = '<?= $activity["date"]; ?>'; // Replace with your activity date
+        const dayDifference = calculateDateDifference(activityDate);
+
+        const reportButton = document.querySelector('.btn.btn-report');
+
+        if (dayDifference >= 10) {
+            reportButton.disabled = true; // Disable the button
+            reportButton.title = "Button disabled as it's been more than 10 days after the activity date.";
+        }
+    });
+</script>
+
 </body>
 
 </html>
