@@ -1,8 +1,0 @@
-Array
-(
-    [tanggal-kegiatan] => 2024-01-09
-    [kegiatan] => Survei Harga Konsumen
-    [nomor-surat] => B-123
-    [tujuan-kegiatan] => Survei Bulan Juli
-    [jadwal] => 1-30 Juli
-)
