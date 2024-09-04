@@ -19,11 +19,12 @@ if (empty($date)) {
 $formattedDate = date('d F Y', strtotime($date));
 
 // Query untuk mengambil detail kegiatan berdasarkan tanggal dan created_by
-$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity, p.nama as pelaksana
+$sql = "SELECT ad.id as id_activity_date, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity, p.nama as pelaksana 
         FROM activity_dates ad
         JOIN activities a ON ad.activity_id = a.id
         JOIN pegawai p ON ad.created_by = p.nip
-        WHERE ad.date = '$date'";
+        WHERE ad.date = '$date' AND ad.id = '$id'";
+
 
 
 $result = $conn->query($sql);
