@@ -5,6 +5,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
 }
 
+
 $result = null;
 $nip = $_SESSION["nip"];
 if ($_SESSION['level'] == "Administrator") {
@@ -15,7 +16,32 @@ if ($_SESSION['level'] == "Administrator") {
 
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 
-if ($id) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'];
+    $fungsi = $_POST['fungsi'];
+    $kode_kegiatan = $_POST['kode_kegiatan'];
+    $activity = $_POST['activity'];
+    $nomor_surat = $_POST['nomor_surat'];
+    $tanggal_surat = $_POST['tanggal_surat'];
+    $tujuan_kegiatan = $_POST['tujuan_kegiatan'];
+    $jadwal = $_POST['jadwal'];
+
+    $sql = "UPDATE activities 
+        SET fungsi = '$fungsi', 
+            kode_kegiatan = '$kode_kegiatan', 
+            activity = '$activity', 
+            nomor_surat = '$nomor_surat', 
+            tanggal_surat = '$tanggal_surat', 
+            tujuan_kegiatan = '$tujuan_kegiatan', 
+            jadwal = '$jadwal'
+        WHERE id = $id";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Kegiatan berhasil diperbarui!'); window.location.href = 'kegiatan.php';</script>";
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
+} else {
     $sql = "SELECT * FROM activities WHERE id = $id";
     $result = $conn->query($sql);
 
@@ -25,10 +51,9 @@ if ($id) {
         echo "Kegiatan tidak ditemukan!";
         exit;
     }
-} else {
-    echo "ID tidak ditemukan!";
-    exit;
 }
+
+$conn->close();
 ?>
 
 
@@ -49,7 +74,7 @@ if ($id) {
     <section class="allocation">
         <div class="form-container">
             <div class="container">
-                <form id="activity-form" action="update_kegiatan.php" method="POST">
+                <form id="activity-form" action="update_activity.php?id<?= $activity['id']; ?>" method="POST">
                     <input type="hidden" name="id" value="<?= $activity['id']; ?>">
 
                     <label for="fungsi">Fungsi</label>
@@ -63,7 +88,7 @@ if ($id) {
 
                     <label for="nomor_surat">Nomor Surat</label>
                     <input type="text" id="nomor_surat" name="nomor_surat" value="<?= htmlspecialchars($activity['nomor_surat']); ?>">
-                    
+
                     <label for="tanggal_surat">Tanggal Surat</label>
                     <input type="date" id="tanggal_surat" name="tanggal_surat" value="<?= htmlspecialchars($activity['tanggal_surat']); ?>">
 

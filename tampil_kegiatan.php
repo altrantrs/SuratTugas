@@ -89,7 +89,7 @@ $conn->close();
     <script>
         function deleteActivity() {
             if (confirm('Anda yakin ingin menghapus kegiatan ini?')) {
-                fetch('delete_activity.php', {
+                fetch('perjalanan_hapus.php', {
                         method: 'POST',
                         body: new URLSearchParams({
                             date: '<?= $date ?>'

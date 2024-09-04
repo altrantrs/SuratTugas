@@ -103,7 +103,7 @@ if ($_SESSION['level'] == "Administrator") {
         function del(id) {
             var xhttp;
             xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "delete_activity.php?date=" + id, true);
+            xhttp.open("GET", "perjalanan_hapus.php?date=" + id, true);
             xhttp.send();
             showtemp();
             document.getElementById('proses').click();
