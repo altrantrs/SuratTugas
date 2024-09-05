@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_surat = $conn->real_escape_string($_POST['tanggal-surat']);
     $tujuan_kegiatan = $conn->real_escape_string($_POST['tujuan-kegiatan']);
     $jadwal = $conn->real_escape_string($_POST['jadwal']);
-    $pelaksana = $conn->real_escape_string($_POST['pelaksana']); // Tambahkan pelaksana
+    $pelaksana = $conn->real_escape_string($_POST['pelaksana']); 
     $created_by = $_SESSION['nip']; 
 
     // Cek apakah kombinasi kegiatan_id, tanggal_kegiatan, dan created_by sudah ada
@@ -41,4 +41,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header('Content-Type: application/json');
     echo json_encode($response);
-
+}

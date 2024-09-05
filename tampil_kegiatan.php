@@ -1,36 +1,37 @@
 <?php
 session_start();
 include_once("db_connection.php");
-
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
-    exit();
 }
 
-$selectedDate = isset($_GET['date']) ? $_GET['date'] : '';
-$activity_id = isset($_GET['activity_id']) ? $_GET['activity_id'] : '';
-
-if ($selectedDate === '') {
-    echo "Date parameter is missing.";
-    exit();
+$result = null;
+$nip = $_SESSION["nip"];
+if ($_SESSION['level'] == "Administrator") {
+    $result = mysqli_query($conn, "SELECT * FROM pegawai ORDER BY nama");
+} else {
+    $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
 }
 
-// Fetch activity details
-$activitySql = "SELECT * FROM activity_dates WHERE date = '$selectedDate' AND activity_id = '$activity_id'";
-$activityResult = $conn->query($activitySql);
+$date = isset($_GET['date']) ? $_GET['date'] : '';
 
-$activities = [];
-while ($row = $activityResult->fetch_assoc()) {
-    $activities[] = $row;
+// Format tanggal dalam format yang diinginkan
+$formattedDate = '';
+if (!empty($date)) {
+    $formattedDate = date('d F Y', strtotime($date));
 }
 
-// Fetch all employees
-$pegawaiResult = $conn->query("SELECT nip, nama FROM pegawai ORDER BY nama");
-$pegawaiList = [];
-if ($pegawaiResult->num_rows > 0) {
-    while ($row = $pegawaiResult->fetch_assoc()) {
-        $pegawaiList[$row['nip']] = $row['nama'];
-    }
+$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, ad.pelaksana, a.activity
+        FROM activity_dates ad
+        JOIN activities a ON ad.activity_id = a.id
+        WHERE ad.date = '$date'";
+
+$result = $conn->query($sql);
+
+$activity = [];
+
+if ($result->num_rows > 0) {
+    $activity = $result->fetch_assoc();
 }
 
 $conn->close();
@@ -42,64 +43,132 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tampil Kegiatan</title>
+    <title>Detail Kegiatan</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <?php include 'header.php'; ?>
-
+    <?php
+    include 'header.php';
+    ?>
     <div class="container">
         <main>
-            <section class="allocation">
-                <div class="form-container">
-                    <h2>Kegiatan pada <?= htmlspecialchars($selectedDate); ?></h2>
-
-                    <table class="activity-table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kegiatan</th>
-                                <th>Pelaksana</th>
-                                <th>Nomor Surat</th>
-                                <th>Tanggal Surat</th>
-                                <th>Tujuan Kegiatan</th>
-                                <th>Jadwal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if (count($activities) > 0) {
-                                foreach ($activities as $index => $activity) {
-                                    $pelaksanaName = isset($pegawaiList[$activity['pelaksana']]) ? $pegawaiList[$activity['pelaksana']] : 'Unknown';
-                            ?>
-                                    <tr>
-                                        <td><?= $index + 1; ?></td>
-                                        <td><?= htmlspecialchars($activity['activity_id']); ?></td>
-                                        <td><?= htmlspecialchars($pelaksanaName); ?></td>
-                                        <td><?= htmlspecialchars($activity['nomor_surat']); ?></td>
-                                        <td><?= htmlspecialchars($activity['tanggal_surat']); ?></td>
-                                        <td><?= htmlspecialchars($activity['tujuan_kegiatan']); ?></td>
-                                        <td><?= htmlspecialchars($activity['jadwal']); ?></td>
-                                        <td>
-                                            <a href="perjalanan_tambah.php?date=<?= urlencode($selectedDate); ?>" class="btn btn-edit">Edit</a>
-                                            <a href="perjalanan_hapus.php?date=<?= urlencode($selectedDate); ?>&activity_id=<?= urlencode($activity['activity_id']); ?>&created_by=<?= urlencode($activity['created_by']); ?>" class="btn btn-delete">Hapus</a>
-                                            <a href="cetak_kegiatan.php?date=<?= urlencode($selectedDate); ?>" class="btn btn-print">Cetak</a>
-                                        </td>
-                                    </tr>
-                            <?php
-                                }
-                            } else {
-                                echo "<tr><td colspan='8'>Tidak ada data kegiatan pada tanggal ini.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+            <h2>Detail Kegiatan</h2>
+            <section class="activity-details">
+                <p><strong>Tanggal:</strong> <?= htmlspecialchars($formattedDate); ?></p>
+                <p><strong>Kegiatan:</strong> <?= htmlspecialchars($activity['activity']); ?></p>
+                <p><strong>Nomor Surat:</strong> <?= htmlspecialchars($activity['nomor_surat']); ?></p>
+                <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
+                <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
+                <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
+                <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana']); ?></p>
             </section>
+
+            <div class="buttons">
+                <button class="btn btn-delete" onclick="deleteActivity()"> Hapus Kegiatan </button>
+                <button class="btn btn-report" onclick="window.location.href='https://s.id/laporanjadi';">Cetak Laporan</button>
+                <button class="btn btn-print"
+                    onclick="printSuratTugas(
+                        '<?= $activity['id_kegiatan'] ?>',  // Menggunakan id_kegiatan
+                        '<?= $nip ?>',
+                        '<?= date('Y', strtotime($activity['date'])) ?>',
+                        '<?= date('m', strtotime($activity['date'])) ?>',
+                        '<?= date('d', strtotime($activity['date'])) ?>',
+                        '<?= $activity['nomor_surat'] ?>',
+                        '<?= $activity['tanggal_surat'] ?>',
+                        '<?= $activity['tujuan_kegiatan'] ?>',
+                        '<?= $activity['jadwal'] ?>'
+                    );">
+                    Cetak Surat Tugas
+                </button>
+
+
+            </div>
         </main>
     </div>
+
+    <script>
+        function deleteActivity() {
+            if (confirm('Anda yakin ingin menghapus kegiatan ini?')) {
+                fetch('delete_activity.php', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            date: '<?= $date ?>'
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            window.location.href = 'index.php'; // Redirect to index.php after deletion
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function printReport() {
+            alert('Cetak Laporan button clicked!');
+        }
+
+        function printSuratTugas(kegiatan, nip, tahun, bulan, tanggal, nosurat, tglsurat, tujuan, periode) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'laporan.php';
+
+            form.appendChild(createInput('kegiatan', kegiatan));
+            form.appendChild(createInput('nip', nip));
+            form.appendChild(createInput('tahun', tahun));
+            form.appendChild(createInput('bulan', bulan));
+            form.appendChild(createInput('tanggal', tanggal));
+            form.appendChild(createInput('nosurat', nosurat));
+            form.appendChild(createInput('tglsurat', tglsurat));
+            form.appendChild(createInput('tujuan', tujuan));
+            form.appendChild(createInput('periode', periode));
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function createInput(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
+        }
+    </script>
+<script>
+    function calculateDateDifference(activityDate) {
+        const currentDate = new Date();
+        const dateParts = activityDate.split('-'); // Assuming activityDate is in 'YYYY-MM-DD' format
+        const activityDateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = currentDate - activityDateObj;
+
+        // Convert the time difference to days
+        const dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+        return dayDifference;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const activityDate = '<?= $activity["date"]; ?>'; // Replace with your activity date
+        const dayDifference = calculateDateDifference(activityDate);
+
+        const reportButton = document.querySelector('.btn.btn-report');
+
+        if (dayDifference >= 10) {
+            reportButton.disabled = true; // Disable the button
+            reportButton.style.cursor = 'not-allowed'
+            reportButton.title = "Button disabled as it's been more than 10 days after the activity date.";
+        }
+    });
+</script>
+
 </body>
 
 </html>
