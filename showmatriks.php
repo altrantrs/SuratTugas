@@ -1,142 +1,3 @@
-<!-- Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "status" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "nama" in D:\xampp\htdocs\Surat\showmatriks.php on line 80
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "activity_id" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "nosurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tglsurat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "tempat" in D:\xampp\htdocs\Surat\showmatriks.php on line 82
-
-Warning: Undefined array key "periode" in D:\xampp\htdocs\Surat\showmatriks.php on line 82 -->
 <?php
 
 session_start();
@@ -216,6 +77,16 @@ function convertDayToInitial($day) {
 }
 
 // Fungsi menampilkan cell kegiatan
+$nama = isset($pegawai['nama']) ? $pegawai['nama'] : 'Unknown';
+$status = isset($pegawai['status']) ? $pegawai['status'] : 'Undefined';
+$tahun = isset($activity['tahun']) ? $activity['tahun'] : '';
+$bulan = isset($activity['bulan']) ? $activity['bulan'] : '';
+$activity_id = isset($activity['activity_id']) ? $activity['activity_id'] : '';
+$nosurat = isset($activity['nosurat']) ? $activity['nosurat'] : '';
+$tglsurat = isset($activity['tglsurat']) ? $activity['tglsurat'] : '';
+$tempat = isset($activity['tempat']) ? $activity['tempat'] : '';
+$periode = isset($activity['periode']) ? $activity['periode'] : '';
+
 function getActivityCell($activity, $bln_temp, $hari_temp, $bg_color, $nip) {
 	$activity_button = "<button onclick=\"alert('{$activity['nama']}');\" class='tanggal{$activity['status']}' title='{$activity['kode_kegiatan']} - {$activity['nama']}'>{$hari_temp}</button>";
 	$delete_icon = "<i class='fas fa-trash-alt' title='Hapus' onclick=\"del('{$activity['id']}');\"></i>";
