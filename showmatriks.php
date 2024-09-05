@@ -13,10 +13,6 @@ $tahun = isset($_REQUEST['tahun']) ? $_REQUEST['tahun'] : date('Y');
 $bulan = isset($_REQUEST['bulan']) ? $_REQUEST['bulan'] : date('m');
 $nip = isset($_REQUEST['nip']) ? $_REQUEST['nip'] : '';
 
-if (!preg_match('/^\d{4}$/', $tahun) || !preg_match('/^(0[1-9]|1[0-2])$/', $bulan)) {
-    die("Tahun atau bulan tidak valid.");
-}
-
 // Set start and end dates for the month
 $tgl_awal = "$tahun/$bulan/01";
 $awal_tgl = strtotime($tgl_awal);
@@ -59,9 +55,9 @@ function tampilkanHariKerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama) 
         $result_activity = mysqli_query($conn, $sql_activity);
 
         if ($result_activity && mysqli_num_rows($result_activity) > 0) {
-            echo getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color);
+            echo getActivityCell($hari_temp, $bln_temp, $bg_color);
         } else {
-            echo getEmptyCell($hari_temp, $bln_temp, $current_date, $bg_color);
+            echo getEmptyCell($hari_temp, $bln_temp, $bg_color);
         }
     }
 
@@ -79,17 +75,18 @@ function convertDayToInitial($day) {
     return isset($days[$day]) ? $days[$day] : '';
 }
 
+$selected_date = $tahun.'-'.$bulan.'-'.$hari_temp;
 // Display activity cell
-function getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color) {
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
-    $show_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$current_date';\"></i>";
+function getActivityCell($hari_temp, $bln_temp, $bg_color) {
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$hari_temp';\">$hari_temp</button>";
+    $show_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$hari_temp';\"></i>";
 
     return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button<br>$show_icon</td>";
 }
 
 // Display empty cell
-function getEmptyCell($hari_temp, $bln_temp, $current_date, $bg_color) {
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
+function getEmptyCell($hari_temp, $bln_temp, $bg_color) {
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$hari_temp';\">$hari_temp</button>";
     return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button</td>";
 }
 
@@ -112,3 +109,4 @@ function getActivityInfo($activity_id) {
     return mysqli_fetch_array($result, MYSQLI_ASSOC);
 }
 ?>
+
