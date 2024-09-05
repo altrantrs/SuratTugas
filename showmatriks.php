@@ -92,12 +92,16 @@ function getActivityCell($activity, $bln_temp, $hari_temp, $bg_color, $nip) {
     $tglsurat = isset($activity['tglsurat']) ? $activity['tglsurat'] : '';
     $tempat = isset($activity['tempat']) ? $activity['tempat'] : '';
     $periode = isset($activity['periode']) ? $activity['periode'] : '';
+    
+    $date = date('Y-m-d', strtotime("$bln_temp/$hari_temp"));
 
-    $activity_button = "<button onclick=\"alert('{$nama}');\" class='tanggal{$status}' title='{$kode_kegiatan} - {$nama}'>{$hari_temp}</button>";
-    $delete_icon = "<i class='fas fa-trash-alt' title='Hapus' onclick=\"del('{$activity_id}');\"></i>";
-    $print_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"laporan('{$activity['tahun']}','{$activity['bulan']}','{$hari_temp}','{$activity_id}','$nip','{$nosurat}','{$tglsurat}','{$tempat}','{$periode}');\"></i>";
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$date';\" class='tanggal{$status}' title='{$kode_kegiatan} - {$nama}'>{$hari_temp}</button>";
+    $delete_icon = "<i class='fas fa-trash-alt' title='Hapus' onclick=\"window.location.href='perjalanan_hapus.php?date=$date&activity_id=$activity_id&created_by=$nip';\"></i>";
+    $print_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$date';\"></i>";
+    
     return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button $delete_icon $print_icon</td>";
 }
+
 
 // Fungsi menampilkan cell kosong
 function getEmptyCell($bg_color, $bln_temp, $hari_temp, $nip) {
