@@ -7,17 +7,12 @@ if (!isset($_SESSION['user'])) {
 
 $result = null;
 $nip = $_SESSION["nip"];
-$employees = [];
 if ($_SESSION['level'] == "Administrator") {
-    // Fetch all employees for administrator
+    // Ambil semua pegawai untuk administrator
     $result = mysqli_query($conn, "SELECT * FROM pegawai ORDER BY nama");
-    while ($row = mysqli_fetch_assoc($result)) {
-        $employees[] = $row;
-    }
 } else {
-    // Fetch data for the logged-in user
+    // Ambil data pegawai untuk user biasa
     $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
-    $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 ?>
 
@@ -33,41 +28,40 @@ if ($_SESSION['level'] == "Administrator") {
     <?php include 'header.php'; ?>
 
     <main>
-        <div class="filter">
-            <label for="employee-select">Pilih Pegawai:</label>
-            <select id="employee-select" onchange="generateCalendar()">
-                <?php if ($_SESSION['level'] == "Administrator") { ?>
-                    <option value="all">Semua Pegawai</option>
-                <?php } ?>
-                <?php foreach ($employees as $employee) { ?>
-                    <option value="<?php echo $employee['nip']; ?>"><?php echo $employee['nama']; ?></option>
-                <?php } ?>
-            </select>
-
-            <label for="month-select">Bulan:</label>
-            <select id="month-select" onchange="generateCalendar()">
-                <option value="0">Januari</option>
-                <option value="1">Februari</option>
-                <option value="2">Maret</option>
-                <option value="3">April</option>
-                <option value="4">Mei</option>
-                <option value="5">Juni</option>
-                <option value="6">Juli</option>
-                <option value="7">Agustus</option>
-                <option value="8">September</option>
-                <option value="9">Oktober</option>
-                <option value="10">November</option>
-                <option value="11">Desember</option>
-            </select>
-        </div>
-
-        <div class="main-content">
-            <div class="employee-table" id="employee-table">
-                <!-- Employee table will be generated here -->
+        <div class="container">
+            <div class="filter">
+                <label for="month-select">Bulan</label>
+                <select id="month-select" onchange="generateCalendar()">
+                    <option value="0">Januari</option>
+                    <option value="1">Februari</option>
+                    <option value="2">Maret</option>
+                    <option value="3">April</option>
+                    <option value="4">Mei</option>
+                    <option value="5">Juni</option>
+                    <option value="6">Juli</option>
+                    <option value="7">Agustus</option>
+                    <option value="8">September</option>
+                    <option value="9">Oktober</option>
+                    <option value="10">November</option>
+                    <option value="11">Desember</option>
+                </select>
             </div>
-            <div class="calendar">
-                <div class="days" id="days-container">
-                    <!-- Calendar will be generated here -->
+
+            <div class="layout">
+                <div class="employee-list">
+                    <h3>Daftar Pegawai</h3>
+                    <select id="employee-select" onchange="generateCalendar()">
+                        <option value="all">Semua Pegawai</option>
+                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                            <option value="<?php echo $row['nip']; ?>"><?php echo $row['nama']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="calendar">
+                    <div class="days" id="days-container">
+                        <!-- Kalender akan di-generate di sini -->
+                    </div>
                 </div>
             </div>
         </div>
