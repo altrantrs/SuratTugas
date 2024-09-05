@@ -5,20 +5,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function generateCalendar() {
     const daysContainer = document.getElementById('days-container');
-    daysContainer.innerHTML = ''; // Clear previous days
-
+    const employeeSelect = document.getElementById('employee-select');
     const monthSelect = document.getElementById('month-select');
+    const selectedEmployee = employeeSelect.value;
     const selectedMonth = parseInt(monthSelect.value);
-
     const year = new Date().getFullYear();
     const daysInMonth = getDaysInMonth(selectedMonth, year);
 
-    fetch('get_activities.php')
+    daysContainer.innerHTML = ''; // Clear previous days
+
+    // Fetch activities from the server based on selected employee and month
+    fetch(`get_activities.php?month=${selectedMonth + 1}&year=${year}&nip=${selectedEmployee}`)
     .then(response => response.json())
-    .then(datesWithActivities => {
-        console.log("Dates with activities:", datesWithActivities);
-        if (datesWithActivities.length === 0) {
-            console.error("No dates received");
+    .then(data => {
+        console.log("Data fetched:", data);
+        if (data.length === 0) {
+            console.error("No activities received");
         }
 
         for (let day = 1; day <= daysInMonth; day++) {
@@ -27,26 +29,27 @@ function generateCalendar() {
             dayElement.textContent = day.toString().padStart(2, '0');
 
             const dayOfWeek = new Date(year, selectedMonth, day).getDay();
-
             if (dayOfWeek === 0 || dayOfWeek === 6) {
                 dayElement.classList.add('weekend');
             }
 
             const currentDate = `${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-            console.log("Checking date:", currentDate);
+            const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
-            if (datesWithActivities.includes(currentDate)) {
-                const checkIcon = document.createElement('i');
-                checkIcon.className = 'fa-solid fa-check';
-                
-                // Create the link
+            if (activitiesForDate.length > 0) {
+                // Create a link element
                 const link = document.createElement('a');
                 link.href = `tampil_kegiatan.php?date=${currentDate}`;
-                link.appendChild(checkIcon);
+                
+                // Create and add the checkmark icon to the link
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-check'; // FontAwesome checkmark icon class
+                icon.style.color = 'green'; // Adjust color as needed
+                icon.style.fontSize = '16px'; // Adjust size as needed
 
+                link.appendChild(icon); // Add the icon to the link
                 dayElement.appendChild(link); // Add the link to the day element
-
-                // Add the cream background class
+                
                 dayElement.classList.add('icon-day');
             }
 
@@ -57,8 +60,9 @@ function generateCalendar() {
             daysContainer.appendChild(dayElement);
         }
     })
-    .catch(error => console.error("Error fetching dates:", error));
+    .catch(error => console.error("Error fetching activities:", error));
 }
+
 
 
 function getDaysInMonth(month, year) {
