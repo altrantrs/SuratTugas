@@ -1,20 +1,20 @@
-// Generate the calendar on page load
 document.addEventListener("DOMContentLoaded", function() {
     generateCalendar(); // Call the function only once when the page loads
 });
 
 function generateCalendar() {
     const daysContainer = document.getElementById('days-container');
-    daysContainer.innerHTML = ''; // Clear previous days
-
+    const employeeSelect = document.getElementById('employee-select');
     const monthSelect = document.getElementById('month-select');
+    const selectedEmployee = employeeSelect.value;
     const selectedMonth = parseInt(monthSelect.value);
-
     const year = new Date().getFullYear();
     const daysInMonth = getDaysInMonth(selectedMonth, year);
 
-    // Fetch activities from server based on the selected month and year
-    fetch(`get_activities.php?month=${selectedMonth + 1}&year=${year}`)
+    daysContainer.innerHTML = ''; // Clear previous days
+
+    // Fetch activities from the server based on selected employee and month
+    fetch(`get_activities.php?month=${selectedMonth + 1}&year=${year}&nip=${selectedEmployee}`)
     .then(response => response.json())
     .then(data => {
         console.log("Data fetched:", data);
@@ -28,7 +28,6 @@ function generateCalendar() {
             dayElement.textContent = day.toString().padStart(2, '0');
 
             const dayOfWeek = new Date(year, selectedMonth, day).getDay();
-
             if (dayOfWeek === 0 || dayOfWeek === 6) {
                 dayElement.classList.add('weekend');
             }
@@ -47,7 +46,6 @@ function generateCalendar() {
                     link.appendChild(activityInfo);
 
                     dayElement.appendChild(link); // Add the link to the day element
-
                     dayElement.classList.add('icon-day');
                 });
             }
