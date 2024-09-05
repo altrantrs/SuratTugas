@@ -1,149 +1,141 @@
 <?php
 session_start();
-
 include_once("db_connection.php");
+
 if (!isset($_SESSION['user'])) {
-	header("Location: index.php");
+    header("Location: index.php");
 }
 
 $tahun = $_REQUEST['tahun'];
 $bulan = $_REQUEST['bulan'];
 $nip = $_REQUEST['nip'];
-$nama = "";
 
-// Define start and end dates for the month
-$tgl_awal = $tahun . "/" . $bulan . "/01";
-$awal_tgl = strtotime($tgl_awal);
-$t = date("t", $awal_tgl);
-$tgl_akhir = $tahun . "/" . $bulan . "/" . $t;
+// Tentukan tanggal awal dan akhir untuk bulan yang dipilih
+$tgl_awal = "$tahun/$bulan/01";
+$tgl_akhir = "$tahun/$bulan/" . date("t", strtotime($tgl_awal));
 
-$sql_peg = "";
-if ($nip == "all") {
-	$sql_peg = "SELECT * FROM pegawai ORDER BY nama";
-} else {
-	$sql_peg = "SELECT * FROM pegawai WHERE nip='$nip' ORDER BY nama";
-}
+$sql_peg = ($nip == "all") ? "SELECT * FROM pegawai ORDER BY nama" : "SELECT * FROM pegawai WHERE nip='$nip' ORDER BY nama";
 
 $result = mysqli_query($conn, $sql_peg);
-echo "<table border='1' cellspacing='0' cellpadding='5'><tr bgcolor='#FFFCCC'><td align=center colspan=40>Kegiatan di Bulan " . bulan($bulan) . " " . $tahun . "</td></tr>";
-while ($res = mysqli_fetch_array($result)) {
-	$nama = $res['nama'];
-	$nip2 = $res['nip'];
-	echo harikerja($nip2, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama);
+echo "<table border='1' cellspacing='0' cellpadding='5'><tr bgcolor='#FFFCCC'><td align=center colspan=40>Kegiatan di Bulan " . bulan($bulan) . " $tahun</td></tr>";
+
+while ($pegawai = mysqli_fetch_array($result)) {
+    echo tampilkanKegiatan($pegawai['nip'], $bulan, $tahun, $tgl_awal, $tgl_akhir, $pegawai['nama']);
 }
 
-function harikerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
+function tampilkanKegiatan($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama)
 {
-	$awal_tgl = strtotime($tgl_awal);
-	$akhir_tgl = strtotime($tgl_akhir);
+    global $conn;
+    $waktu = strtotime($tgl_awal);
+    $akhir_tgl = strtotime($tgl_akhir);
+    echo "<tr><td>$nama</td>";
 
-	$waktu_temp = $awal_tgl;
-	echo "<tr><td>" . $nama . "</td>";
-	while ($waktu_temp <= $akhir_tgl) {
-		$current_date = date("Y-m-d", $waktu_temp); // Format the current date
+    while ($waktu <= $akhir_tgl) {
+        $current_date = date("Y-m-d", $waktu);
+        $hari = date("D", $waktu);
+        $tanggal = date("d", $waktu);
+        $hari_awal = translateDay($hari);
+        $warna_hari = ($hari == "Sun" || $hari == "Sat") ? "pink" : "white";
 
-		// Determine the day of the week for coloring
-		$hari_tem = date("D", $waktu_temp);
-		$hari_temp = date("d", $waktu_temp);
+        $sql = "SELECT * FROM activity_dates WHERE created_by='$nip' AND date='$current_date'";
+        $activity = mysqli_fetch_array(mysqli_query($conn, $sql));
 
-		$bln_temp = date("D", $waktu_temp);
-		if ($bln_temp == "Mon") {
-			$bln_temp = "S";
-		} elseif ($bln_temp == "Tue") {
-			$bln_temp = "S";
-		} elseif ($bln_temp == "Wed") {
-			$bln_temp = "R";
-		} elseif ($bln_temp == "Thu") {
-			$bln_temp = "K";
-		} elseif ($bln_temp == "Fri") {
-			$bln_temp = "J";
-		} elseif ($bln_temp == "Sat") {
-			$bln_temp = "S";
-		} elseif ($bln_temp == "Sun") {
-			$bln_temp = "M";
-		}
+        if ($activity) {
+            $activity_details = fetchActivityDetails($activity);
+            $res_activity = fetchActivity($activity['activity_id']);
+            tampilkanActivityButton($activity_details, $res_activity, $warna_hari, $hari_awal, $tanggal);
+        } else {
+            echo "<td align=center bgcolor='$warna_hari'>" . tampilkanKosongButton($nip, $tanggal, $bulan, $tahun) . "</td>";
+        }
 
-		$whari = ($hari_tem == "Sun" || $hari_tem == "Sat") ? "pink" : "white";
+        $waktu = strtotime("+1 day", $waktu);
+    }
 
-		include("db_connection.php");
+    tampilkanRekap($nip, $bulan, $tahun);
+    echo "</tr>";
+}
 
-		// Updated SQL query to match the date column
-		$sql = "SELECT * FROM activity_dates WHERE created_by='$nip' AND date='$current_date'";
-		$result2 = mysqli_query($conn, $sql);
+function translateDay($day)
+{
+    $translations = [
+        "Mon" => "S",
+        "Tue" => "S",
+        "Wed" => "R",
+        "Thu" => "K",
+        "Fri" => "J",
+        "Sat" => "S",
+        "Sun" => "M"
+    ];
+    return $translations[$day];
+}
 
-		if ($result2 && mysqli_num_rows($result2) > 0) {
-			$res = mysqli_fetch_array($result2);
+function fetchActivityDetails($activity)
+{
+    return [
+        'nosurat' => $activity['nosurat'] ?? '',
+        'tglsurat' => $activity['tglsurat'] ?? '',
+        'jabatan' => $activity['jabatan'] ?? '',
+        'id_kegiatan' => $activity['activity_id'] ?? '',
+        'periode' => $activity['periode'] ?? '',
+        'tempat' => $activity['tempat'] ?? '',
+        'status' => $activity['status'] ?? '',
+        'id' => $activity['id'] ?? ''
+    ];
+}
 
-			$nosurat = isset($res['nosurat']) ? $res['nosurat'] : '';
-			$tglsurat = isset($res['tglsurat']) ? $res['tglsurat'] : '';
-			$jabatan = isset($res['jabatan']) ? $res['jabatan'] : '';
-			$id_kegiatan = isset($res['activity_id']) ? $res['activity_id'] : '';
-			$periode = isset($res['periode']) ? $res['periode'] : '';
-			$tempat = isset($res['tempat']) ? $res['tempat'] : '';
-			$status = isset($res['status']) ? $res['status'] : '';
-			$id = isset($res['id']) ? $res['id'] : '';
-			$result3 = mysqli_query($conn, "SELECT * FROM activities WHERE id='$id_kegiatan'");
-			$res3 = mysqli_fetch_array($result3);
+function fetchActivity($id_kegiatan)
+{
+    global $conn;
+    $sql = "SELECT * FROM activities WHERE id='$id_kegiatan'";
+    return mysqli_fetch_array(mysqli_query($conn, $sql));
+}
 
-			if ($_SESSION['level'] == "Administrator") {
-				if ($status == "1") {
-					echo "<td align=center bgcolor=" . $whari . ">" 
-					. $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';
-					edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tempat','$periode','$status','$id');
-					\" class='tanggal3' title='" . $res3['id'] . " - " . $res3['activity'] . "'>" . $hari_temp . 
-					"</button><i class='fas fa-trash-alt' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> 
-					<i class='fa-solid fa-check' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
-				} else {
-					echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';edit('$nip','$hari_temp','$bulan','$tahun','$jabatan','$id_kegiatan','$nosurat','$tglsurat','$tempat','$periode','$status','$id');\" class='tanggal1' title='" . $res3['id'] . " - " . $res3['activity'] . "'>" . $hari_temp . "</button><i class='fas fa-trash-alt' height=10 width=10  title='Hapus' onclick=\"del('" . $res['id'] . "');\"> <i class='fa-solid fa-check' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
-				}
-			} else {
-				if ($status == "1") {
-					echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['activity'] . "');\" class='tanggal3' title='" . $res3['kode_kegiatan'] . " - " . $res3['activity'] . "'>" . $hari_temp . "</button> <i class='fa-solid fa-check' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
-				} else {
-					echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"alert('" . $res3['activity'] . "');\" class='tanggal1' title='" . $res3['kode_kegiatan'] . " - " . $res3['activity'] . "'>" . $hari_temp . "</button> <i class='fa-solid fa-check' height=15 width=15  title='Print' onclick=\"laporan('$tahun','$bulan','$hari_temp','$id_kegiatan','$nip','$nosurat','$tglsurat','$tempat','$periode');\"></td>";
-				}
-			}
-		} else {
-			if ($_SESSION['level'] == "Administrator") {
-				echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button onclick=\"document.getElementById('id01').style.display='block';isi('$nip','$hari_temp','$bulan','$tahun');\" class='tanggal0'>" . $hari_temp . "</button></td>";
-			} else {
-				echo "<td align=center bgcolor=" . $whari . ">" . $bln_temp . "<br><button class='tanggal0'>" . $hari_temp . "</button></td>";
-			}
-		}
+function tampilkanActivityButton($activity, $res_activity, $warna_hari, $hari_awal, $tanggal)
+{
+    if ($_SESSION['level'] == "Administrator") {
+        $button_class = ($activity['status'] == "1") ? 'tanggal3' : 'tanggal1';
+        echo "<td align=center bgcolor='$warna_hari'>$hari_awal<br><button class='$button_class' title='{$res_activity['activity']}' onclick=\"editActivity('$activity[id]')\">$tanggal</button>";
+        echo "<i class='fa-solid fa-check' onclick=\"laporanActivity('$activity')\"></i></td>";
+    } else {
+        $button_class = ($activity['status'] == "1") ? 'tanggal3' : 'tanggal1';
+        echo "<td align=center bgcolor='$warna_hari'>$hari_awal<br><button class='$button_class' title='{$res_activity['activity']}' onclick=\"alert('{$res_activity['activity']}')\">$tanggal</button>";
+        echo "<i class='fa-solid fa-check' onclick=\"laporanActivity('$activity')\"></i></td>";
+    }
+}
 
-		$waktu_temp = strtotime("+1 day", $waktu_temp);
-	}
-	$rekap = mysqli_query($conn, "SELECT count(activity_id) as jum FROM activity_dates WHERE created_by='$nip' and MONTH(date)='$bulan' and YEAR(date)='$tahun'");
-	$resrekap = mysqli_fetch_array($rekap);
-	$wrekap = "";
-	if ($resrekap['jum'] > 0) {
-		if ($resrekap['jum'] > 15) {
-			$wrekap = "red";
-		} else {
-			$wrekap = "green";
-		}
-	} else {
-		$wrekap = "white";
-	}
-	echo "<td bgcolor=" . $wrekap . "><p style='color:white;'>" . $resrekap['jum'] . "</p></td>";
-	echo "</tr>";
+function tampilkanKosongButton($nip, $tanggal, $bulan, $tahun)
+{
+    if ($_SESSION['level'] == "Administrator") {
+        return "<button onclick=\"isiActivity('$nip','$tanggal','$bulan','$tahun')\" class='tanggal0'>$tanggal</button>";
+    } else {
+        return "<button class='tanggal0'>$tanggal</button>";
+    }
+}
+
+function tampilkanRekap($nip, $bulan, $tahun)
+{
+    global $conn;
+    $rekap = mysqli_fetch_array(mysqli_query($conn, "SELECT count(activity_id) as jum FROM activity_dates WHERE created_by='$nip' and MONTH(date)='$bulan' and YEAR(date)='$tahun'"));
+    $warna_rekap = ($rekap['jum'] > 15) ? "red" : ($rekap['jum'] > 0 ? "green" : "white");
+    echo "<td bgcolor='$warna_rekap'><p style='color:white;'>{$rekap['jum']}</p></td>";
 }
 
 function bulan($bln)
 {
-	$bulan_array = array(
-		"01" => "Januari",
-		"02" => "Februari",
-		"03" => "Maret",
-		"04" => "April",
-		"05" => "Mei",
-		"06" => "Juni",
-		"07" => "Juli",
-		"08" => "Agustus",
-		"09" => "September",
-		"10" => "Oktober",
-		"11" => "November",
-		"12" => "Desember",
-	);
-	return $bulan_array[$bln];
+    $bulan_array = [
+        "01" => "Januari",
+        "02" => "Februari",
+        "03" => "Maret",
+        "04" => "April",
+        "05" => "Mei",
+        "06" => "Juni",
+        "07" => "Juli",
+        "08" => "Agustus",
+        "09" => "September",
+        "10" => "Oktober",
+        "11" => "November",
+        "12" => "Desember",
+    ];
+    return $bulan_array[$bln];
 }
+?>
