@@ -59,12 +59,9 @@ function tampilkanHariKerja($nip, $bulan, $tahun, $tgl_awal, $tgl_akhir, $nama) 
         $result_activity = mysqli_query($conn, $sql_activity);
 
         if ($result_activity && mysqli_num_rows($result_activity) > 0) {
-            $activity = mysqli_fetch_array($result_activity, MYSQLI_ASSOC);
-            $activity_info = getActivityInfo(isset($activity['activity_id']) ? $activity['activity_id'] : '');
-
-            echo getActivityCell($activity_info, $bln_temp, $current_date, $bg_color);
+            echo getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color);
         } else {
-            echo getEmptyCell($bg_color, $bln_temp, $hari_temp, $nip);
+            echo getEmptyCell($hari_temp, $bln_temp, $current_date, $bg_color);
         }
     }
 
@@ -83,19 +80,17 @@ function convertDayToInitial($day) {
 }
 
 // Display activity cell
-function getActivityCell($activity_info, $bln_temp, $current_date, $bg_color) {
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">Add Activity</button>";
-    $print_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$current_date';\"></i>";
+function getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color) {
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
+    $show_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$current_date';\"></i>";
 
-    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button<br>$print_icon</td>";
+    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button<br>$show_icon</td>";
 }
 
 // Display empty cell
-function getEmptyCell($bg_color, $bln_temp, $hari_temp, $nip) {
-    if ($_SESSION['level'] == "Administrator") {
-        return "<td align='center' bgcolor='$bg_color'>$bln_temp<br><button onclick=\"document.getElementById('id01').style.display='block';isi('$nip','$hari_temp');\" class='tanggal0'>$hari_temp</button></td>";
-    }
-    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br><button class='tanggal0'>$hari_temp</button></td>";
+function getEmptyCell($hari_temp, $bln_temp, $current_date, $bg_color) {
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
+    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button</td>";
 }
 
 // Get month name
