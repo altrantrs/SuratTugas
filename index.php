@@ -99,17 +99,6 @@ if ($_SESSION['level'] == "Administrator") {
                 xhttp.send();
             }
         }
-
-        function del(id) {
-            var xhttp;
-            xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "berandadelete.php?id=" + id, true);
-            xhttp.send();
-            showtemp();
-            document.getElementById('proses').click();
-            document.getElementById('cancel').click();
-
-        }
     </script>
 
     <script src="script.js"></script>

@@ -1,3 +1,18 @@
+<!-- Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92
+
+Warning: Array to string conversion in D:\xampp\htdocs\Surat\showmatriks.php on line 92 -->
 <?php
 
 session_start();
@@ -83,23 +98,13 @@ function convertDayToInitial($day) {
 }
 
 // Fungsi menampilkan cell kegiatan
-function getActivityCell($activity, $bln_temp, $hari_temp, $bg_color, $nip) {
-    $nama = isset($activity['nama']) ? $activity['nama'] : '';
-    $status = isset($activity['status']) ? $activity['status'] : '';
-    $kode_kegiatan = isset($activity['kode_kegiatan']) ? $activity['kode_kegiatan'] : '';
-    $activity_id = isset($activity['activity_id']) ? $activity['activity_id'] : '';
-    $nosurat = isset($activity['nosurat']) ? $activity['nosurat'] : '';
-    $tglsurat = isset($activity['tglsurat']) ? $activity['tglsurat'] : '';
-    $tempat = isset($activity['tempat']) ? $activity['tempat'] : '';
-    $periode = isset($activity['periode']) ? $activity['periode'] : '';
+function getActivityCell($bln_temp, $current_date, $bg_color) {
     
-    $date = date('Y-m-d', strtotime("$bln_temp/$hari_temp"));
-
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$date';\" class='tanggal{$status}' title='{$kode_kegiatan} - {$nama}'>{$hari_temp}</button>";
-    $delete_icon = "<i class='fas fa-trash-alt' title='Hapus' onclick=\"window.location.href='perjalanan_hapus.php?date=$date&activity_id=$activity_id&created_by=$nip';\"></i>";
-    $print_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$date';\"></i>";
+    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\" </button>";
+    // $delete_icon = "<i class='fas fa-trash-alt' title='Hapus' onclick=\"deleteActivity()\"></i>";
+    $print_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$current_date';\"></i>";
     
-    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button $delete_icon $print_icon</td>";
+    return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button $print_icon</td>";
 }
 
 
