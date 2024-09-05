@@ -77,8 +77,8 @@ function convertDayToInitial($day) {
 }
 
 // Fungsi menampilkan cell kegiatan
-$nama = isset($pegawai['nama']) ? $pegawai['nama'] : 'Unknown';
-$status = isset($pegawai['status']) ? $pegawai['status'] : 'Undefined';
+$nama = isset($pegawai['nama']) ? $pegawai['nama'] : '';
+$status = isset($activity['status']) ? $activity['status'] : '';
 $tahun = isset($activity['tahun']) ? $activity['tahun'] : '';
 $bulan = isset($activity['bulan']) ? $activity['bulan'] : '';
 $activity_id = isset($activity['activity_id']) ? $activity['activity_id'] : '';
@@ -86,6 +86,17 @@ $nosurat = isset($activity['nosurat']) ? $activity['nosurat'] : '';
 $tglsurat = isset($activity['tglsurat']) ? $activity['tglsurat'] : '';
 $tempat = isset($activity['tempat']) ? $activity['tempat'] : '';
 $periode = isset($activity['periode']) ? $activity['periode'] : '';
+
+if ($result_activity && mysqli_num_rows($result_activity) > 0) {
+    $activity = mysqli_fetch_array($result_activity);
+    $activity_info = getActivityInfo($activity);
+    echo getActivityCell($activity_info, $bln_temp, $hari_temp, $bg_color, $nip);
+} else {
+    echo getEmptyCell($bg_color, $bln_temp, $hari_temp, $nip);
+}
+
+var_dump($pegawai);  // To check if pegawai data is correct
+var_dump($activity); // To check if activity data is correct
 
 function getActivityCell($activity, $bln_temp, $hari_temp, $bg_color, $nip) {
 	$activity_button = "<button onclick=\"alert('{$activity['nama']}');\" class='tanggal{$activity['status']}' title='{$activity['kode_kegiatan']} - {$activity['nama']}'>{$hari_temp}</button>";
