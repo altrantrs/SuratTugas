@@ -1,38 +1,32 @@
+
 <?php
-include 'db_connection.php';
 session_start();
+include_once("db_connection.php");
 
-// Set header for JSON
-header('Content-Type: application/json');
+$month = $_GET['month'];
+$year = $_GET['year'];
+$nip = $_SESSION["nip"];
 
-$nip = isset($_GET["nip"]) ? $_GET["nip"] : $_SESSION["nip"];
-$level = $_SESSION["level"];
-
-if ($nip == "all") {
-    // If "Semua Pegawai" is selected, fetch all dates
-    $sql = "SELECT DISTINCT date FROM activity_dates";
+if ($_SESSION['level'] == "Administrator") {
+    $query = "SELECT activity_dates.date, pegawai.nama 
+              FROM activity_dates
+              JOIN pegawai ON activity_dates.created_by = pegawai.nip
+              WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year";
 } else {
-    // Otherwise, fetch dates specific to the user
-    $sql = "SELECT date FROM activity_dates WHERE created_by = '$nip'";
+    $query = "SELECT activity_dates.date 
+              FROM activity_dates 
+              WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND created_by='$nip'";
 }
 
-$result = $conn->query($sql);
+$result = mysqli_query($conn, $query);
+$activities = [];
 
-$dates_with_activities = [];
-
-if ($result) { // Ensure the query is successful
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $dates_with_activities[] = $row['date'];
-        }
-    }
-} else {
-    // If the query fails, send an error message in JSON format
-    echo json_encode(['error' => 'Query failed: ' . $conn->error]);
-    exit;
+while ($row = mysqli_fetch_assoc($result)) {
+    $activities[] = [
+        'date' => $row['date'],
+        'nama' => $row['nama'] ?? null // Tambahkan nama pegawai untuk administrator
+    ];
 }
 
-echo json_encode($dates_with_activities);
-
-$conn->close();
+echo json_encode($activities);
 ?>
