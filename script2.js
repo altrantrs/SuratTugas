@@ -36,18 +36,12 @@ function generateCalendar() {
             const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
             if (activitiesForDate.length > 0) {
-                activitiesForDate.forEach(activity => {
-                    const activityInfo = document.createElement('div');
-                    activityInfo.className = 'activity-info';
-                    activityInfo.textContent = activity.nama || "No name"; // Show employee's name
+                // Add a checkmark icon if there are activities
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-check'; // Assuming you're using FontAwesome for checkmark icon
 
-                    const link = document.createElement('a');
-                    link.href = `tampil_kegiatan.php?date=${currentDate}`;
-                    link.appendChild(activityInfo);
-
-                    dayElement.appendChild(link); // Add the link to the day element
-                    dayElement.classList.add('icon-day');
-                });
+                dayElement.appendChild(icon);
+                dayElement.classList.add('icon-day');
             }
 
             dayElement.addEventListener('click', () => {
@@ -59,6 +53,7 @@ function generateCalendar() {
     })
     .catch(error => console.error("Error fetching activities:", error));
 }
+
 
 function getDaysInMonth(month, year) {
     return new Date(year, month + 1, 0).getDate(); // Get the number of days in the month
