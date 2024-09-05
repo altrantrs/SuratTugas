@@ -4,7 +4,6 @@ include 'db_connection.php';
 session_start(); // Pastikan session dimulai untuk mengakses session variables
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form
     $tanggal_kegiatan = $conn->real_escape_string($_POST['tanggal-kegiatan']);
     $kegiatan_id = $conn->real_escape_string($_POST['kegiatan']);
     $nomor_surat = $conn->real_escape_string($_POST['nomor-surat']);
@@ -12,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tujuan_kegiatan = $conn->real_escape_string($_POST['tujuan-kegiatan']);
     $jadwal = $conn->real_escape_string($_POST['jadwal']);
     $created_by = $_SESSION['nip']; 
+    $pelaksana = $_POST['pelaksana']; // Array of pelaksana NIPs
 
     // Cek apakah kombinasi kegiatan_id, tanggal_kegiatan, dan created_by sudah ada
     $checkSql = "SELECT id FROM activity_dates WHERE activity_id = '$kegiatan_id' AND date = '$tanggal_kegiatan' AND created_by = '$created_by'";
@@ -25,10 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SET nomor_surat = '$nomor_surat', tanggal_surat = '$tanggal_surat', tujuan_kegiatan = '$tujuan_kegiatan', jadwal = '$jadwal' 
                 WHERE id = '$activity_date_id'";
     } else {
-        // Jika kombinasi tidak ada, masukkan data baru
-        $sql = "INSERT INTO activity_dates (activity_id, date, nomor_surat, tanggal_surat, tujuan_kegiatan, jadwal, created_by) 
+        $sql = "INSERT INTO activity_dates (activity_id, date, nomor_surat, tanggal_surat, tujuan_kegiatan, jadwal, created_by)
                 VALUES ('$kegiatan_id', '$tanggal_kegiatan', '$nomor_surat', '$tanggal_surat', '$tujuan_kegiatan', '$jadwal', '$created_by')";
+        if ($conn->query($sql) === TRUE) {
+            $activity_date_id = $conn->insert_id;
+            foreach ($pelaksana as $nip_pelaksana) {
+                $conn->query("INSERT INTO activity_pelaksana (activity_date_id, nip) VALUES ('$activity_date_id', '$nip_pelaksana')");
+            }
+        }
     }
+}
 
     if ($conn->query($sql) === TRUE) {
         $response = ['status' => 'success', 'message' => 'Kegiatan berhasil disimpan'];
