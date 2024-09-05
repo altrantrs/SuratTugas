@@ -1,30 +1,3 @@
-<!-- Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "tahun" in D:\xampp\htdocs\Surat\showmatriks.php on line 94
-
-Warning: Undefined array key "bulan" in D:\xampp\htdocs\Surat\showmatriks.php on line 94 -->
 <?php
 
 session_start();
@@ -36,9 +9,15 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-$tahun = isset($_REQUEST['tahun']) ? $_REQUEST['tahun'] : '';
-$bulan = isset($_REQUEST['bulan']) ? $_REQUEST['bulan'] : '';
+// Pastikan 'tahun' dan 'bulan' ada dan valid
+$tahun = isset($_REQUEST['tahun']) ? $_REQUEST['tahun'] : date('Y');
+$bulan = isset($_REQUEST['bulan']) ? $_REQUEST['bulan'] : date('m');
 $nip = isset($_REQUEST['nip']) ? $_REQUEST['nip'] : '';
+
+// Validasi input tahun dan bulan
+if (!preg_match('/^\d{4}$/', $tahun) || !preg_match('/^(0[1-9]|1[0-2])$/', $bulan)) {
+    die("Tahun atau bulan tidak valid.");
+}
 
 // Tentukan tanggal awal dan akhir bulan
 $tgl_awal = "$tahun/$bulan/01";
