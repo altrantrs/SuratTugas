@@ -1,19 +1,17 @@
 <?php
 session_start();
 include_once("db_connection.php");
+
+// Redirect to login page if user is not logged in
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
+    exit();
 }
 
-$result = null;
 $nip = $_SESSION["nip"];
-if ($_SESSION['level'] == "Administrator") {
-    $result = mysqli_query($conn, "SELECT * FROM pegawai ORDER BY nama");
-} else {
-    $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
-}
+$userLevel = $_SESSION['level'];
 
-// Mengambil daftar kegiatan dari database untuk dropdown
+// Fetch activities for dropdown
 $sql = "SELECT id, activity FROM activities";
 $kegiatanResult = $conn->query($sql);
 
@@ -24,10 +22,17 @@ if ($kegiatanResult->num_rows > 0) {
     }
 }
 
-// Mengambil daftar pegawai untuk dropdown pelaksana
+// Fetch employees based on user level
+if ($userLevel == "Administrator") {
+    $sql = "SELECT nip, nama FROM pegawai ORDER BY nama";
+} else {
+    $sql = "SELECT nip, nama FROM pegawai WHERE nip='$nip'";
+}
+$pegawaiResult = $conn->query($sql);
+
 $pegawaiList = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($pegawaiResult->num_rows > 0) {
+    while ($row = $pegawaiResult->fetch_assoc()) {
         $pegawaiList[] = $row;
     }
 }
@@ -37,18 +42,14 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Kegiatan</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <?php
-    include 'header.php';
-    ?>
+    <?php include 'header.php'; ?>
 
     <div class="container">
         <main>
@@ -83,7 +84,7 @@ $conn->close();
                         <select id="pelaksana" name="pelaksana">
                             <option value="">Pilih Pelaksana</option>
                             <?php foreach ($pegawaiList as $pegawai) : ?>
-                                <option value="<?= $pegawai['nama']; ?>"><?= $pegawai['nama']; ?></option>
+                                <option value="<?= $pegawai['nip']; ?>"><?= $pegawai['nama']; ?></option>
                             <?php endforeach; ?>
                         </select>
 
@@ -99,14 +100,13 @@ $conn->close();
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('activity-form');
             const selectedDate = localStorage.getItem('selectedDate');
-            console.log(selectedDate);
+
             if (selectedDate) {
                 document.getElementById('tanggal-kegiatan').value = selectedDate;
             }
 
             const kegiatanSelect = document.getElementById('kegiatan');
 
-            // Ketika kegiatan dipilih, fetch detail dan isi form secara otomatis
             kegiatanSelect.addEventListener('change', function() {
                 const kegiatanId = this.value;
 
@@ -125,7 +125,6 @@ $conn->close();
                         })
                         .catch(error => console.error('Error:', error));
                 } else {
-                    // Kosongkan input jika tidak ada kegiatan yang dipilih
                     document.getElementById('nomor-surat').value = '';
                     document.getElementById('tanggal-surat').value = '';
                     document.getElementById('tujuan-kegiatan').value = '';
@@ -137,18 +136,12 @@ $conn->close();
                 event.preventDefault();
                 const formData = new FormData(form);
 
-                // Debugging
-                for (const [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
-
                 fetch('perjalanan_simpan.php', {
                         method: 'POST',
                         body: formData
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data); // Debugging
                         if (data.status === 'success') {
                             alert(data.message);
                             window.location.href = 'tampil_kegiatan.php?date=' + encodeURIComponent(selectedDate);
@@ -161,5 +154,4 @@ $conn->close();
         });
     </script>
 </body>
-
 </html>
