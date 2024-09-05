@@ -37,6 +37,7 @@ function generateCalendar() {
 
             if (activitiesForDate.length > 0) {
                 // Add a checkmark icon if there are activities
+                
                 const icon = document.createElement('i');
                 icon.className = 'fa-solid fa-check'; // Assuming you're using FontAwesome for checkmark icon
 

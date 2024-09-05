@@ -84,7 +84,7 @@ $conn->close();
                         <select id="pelaksana" name="pelaksana">
                             <option value="">Pilih Pelaksana</option>
                             <?php foreach ($pegawaiList as $pegawai) : ?>
-                                <option value="<?= $pegawai['nip']; ?>"><?= $pegawai['nama']; ?></option>
+                                <option value="<?= $pegawai['nama']; ?>"><?= $pegawai['nama']; ?></option>
                             <?php endforeach; ?>
                         </select>
 
