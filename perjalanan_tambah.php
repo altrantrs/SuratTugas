@@ -83,6 +83,7 @@ $conn->close();
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('activity-form');
             const selectedDate = localStorage.getItem('selectedDate');
+            console.log(selectedDate);
             if (selectedDate) {
                 document.getElementById('tanggal-kegiatan').value = selectedDate;
             }

@@ -81,7 +81,7 @@ function convertDayToInitial($day) {
 
 // Display activity cell
 function getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color) {
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
+    $activity_button = "<button onclick=\"console.log('Button clicked');console.log('$current_date');localStorage.setItem('selectedDate','$current_date'); window.location.href='perjalanan_tambah.php?;\">$hari_temp</button>";
     $show_icon = "<i class='fa-solid fa-check' title='Print' onclick=\"window.location.href='tampil_kegiatan.php?date=$current_date';\"></i>";
 
     return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button<br>$show_icon</td>";
@@ -89,7 +89,7 @@ function getActivityCell($hari_temp, $bln_temp, $current_date, $bg_color) {
 
 // Display empty cell
 function getEmptyCell($hari_temp, $bln_temp, $current_date, $bg_color) {
-    $activity_button = "<button onclick=\"window.location.href='perjalanan_tambah.php?tanggal=$current_date';\">$hari_temp</button>";
+    $activity_button = "<button onclick=\"console.log('Button clicked');console.log('$current_date');localStorage.setItem('selectedDate','$current_date'); window.location.href='perjalanan_tambah.php?;\">$hari_temp</button>";
     return "<td align='center' bgcolor='$bg_color'>$bln_temp<br>$activity_button</td>";
 }
 
