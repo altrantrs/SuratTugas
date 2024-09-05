@@ -13,18 +13,22 @@ if ($_SESSION['level'] == "Administrator") {
     $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
 }
 
-// Fetch all employees for the "pelaksana" dropdown
-$pegawaiQuery = "SELECT nip, nama FROM pegawai ORDER BY nama";
-$pegawaiResult = $conn->query($pegawaiQuery);
-
-// Fetch activities for dropdown
+// Mengambil daftar kegiatan dari database untuk dropdown
 $sql = "SELECT id, activity FROM activities";
-$activityResult = $conn->query($sql);
+$kegiatanResult = $conn->query($sql);
 
 $kegiatanList = [];
-if ($activityResult->num_rows > 0) {
-    while ($row = $activityResult->fetch_assoc()) {
+if ($kegiatanResult->num_rows > 0) {
+    while ($row = $kegiatanResult->fetch_assoc()) {
         $kegiatanList[] = $row;
+    }
+}
+
+// Mengambil daftar pegawai untuk dropdown pelaksana
+$pegawaiList = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $pegawaiList[] = $row;
     }
 }
 
@@ -33,14 +37,18 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Kegiatan</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <?php include 'header.php'; ?>
+    <?php
+    include 'header.php';
+    ?>
 
     <div class="container">
         <main>
@@ -59,13 +67,6 @@ $conn->close();
                             <?php endforeach; ?>
                         </select>
 
-                        <label for="pelaksana">Pelaksana</label>
-                        <select id="pelaksana" name="pelaksana[]" multiple>
-                            <?php while ($pegawai = $pegawaiResult->fetch_assoc()) : ?>
-                                <option value="<?= $pegawai['nip']; ?>"><?= $pegawai['nama']; ?></option>
-                            <?php endwhile; ?>
-                        </select>
-
                         <label for="nomor-surat">Nomor Surat</label>
                         <input type="text" id="nomor-surat" name="nomor-surat" placeholder="Value">
 
@@ -78,6 +79,14 @@ $conn->close();
                         <label for="jadwal">Jadwal</label>
                         <input type="text" id="jadwal" name="jadwal" placeholder="Value">
 
+                        <label for="pelaksana">Pelaksana</label>
+                        <select id="pelaksana" name="pelaksana">
+                            <option value="">Pilih Pelaksana</option>
+                            <?php foreach ($pegawaiList as $pegawai) : ?>
+                                <option value="<?= $pegawai['nip']; ?>"><?= $pegawai['nama']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+
                         <div class="buttons">
                             <button type="submit" id="save-btn" class="btn btn-save">Simpan</button>
                         </div>
@@ -86,35 +95,71 @@ $conn->close();
             </section>
         </main>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('activity-form');
             const selectedDate = localStorage.getItem('selectedDate');
+            console.log(selectedDate);
             if (selectedDate) {
                 document.getElementById('tanggal-kegiatan').value = selectedDate;
             }
+
+            const kegiatanSelect = document.getElementById('kegiatan');
+
+            // Ketika kegiatan dipilih, fetch detail dan isi form secara otomatis
+            kegiatanSelect.addEventListener('change', function() {
+                const kegiatanId = this.value;
+
+                if (kegiatanId) {
+                    fetch('get_kegiatan_details.php?id=' + encodeURIComponent(kegiatanId))
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                document.getElementById('nomor-surat').value = data.nomor_surat || '';
+                                document.getElementById('tanggal-surat').value = data.tanggal_surat || '';
+                                document.getElementById('tujuan-kegiatan').value = data.tujuan_kegiatan || '';
+                                document.getElementById('jadwal').value = data.jadwal || '';
+                            } else {
+                                alert("Error: " + data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                } else {
+                    // Kosongkan input jika tidak ada kegiatan yang dipilih
+                    document.getElementById('nomor-surat').value = '';
+                    document.getElementById('tanggal-surat').value = '';
+                    document.getElementById('tujuan-kegiatan').value = '';
+                    document.getElementById('jadwal').value = '';
+                }
+            });
 
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
                 const formData = new FormData(form);
 
+                // Debugging
+                for (const [key, value] of formData.entries()) {
+                    console.log(`${key}: ${value}`);
+                }
+
                 fetch('perjalanan_simpan.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert(data.message);
-                        window.location.href = 'tampil_kegiatan.php?date=' + encodeURIComponent(selectedDate);
-                    } else {
-                        alert("Error: " + data.message);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Debugging
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            window.location.href = 'tampil_kegiatan.php?date=' + encodeURIComponent(selectedDate);
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>
 </body>
+
 </html>
