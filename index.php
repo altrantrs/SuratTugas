@@ -7,120 +7,72 @@ if (!isset($_SESSION['user'])) {
 
 $result = null;
 $nip = $_SESSION["nip"];
+$employees = [];
 if ($_SESSION['level'] == "Administrator") {
-    // Ambil semua pegawai untuk administrator
+    // Fetch all employees for administrator
     $result = mysqli_query($conn, "SELECT * FROM pegawai ORDER BY nama");
+    while ($row = mysqli_fetch_assoc($result)) {
+        $employees[] = $row;
+    }
 } else {
-    // Ambil data pegawai untuk user biasa
+    // Fetch data for the logged-in user
     $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
+    $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Tugas BPS Kabupaten Wonogiri</title>
-
-    <!-- Fonts -->
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <?php
-    include 'header.php';
-    ?>
+    <?php include 'header.php'; ?>
 
     <main>
-        <div>
         <div class="filter">
-                    <label for="month-select">Bulan</label>
-                    <select id="month-select" onchange="generateCalendar()">
-                        <option value="0">Januari</option>
-                        <option value="1">Februari</option>
-                        <option value="2">Maret</option>
-                        <option value="3">April</option>
-                        <option value="4">Mei</option>
-                        <option value="5">Juni</option>
-                        <option value="6">Juli</option>
-                        <option value="7">Agustus</option>
-                        <option value="8">September</option>
-                        <ooption value="9">Oktober</option>
-                        <option value="10">November</option>
-                        <option value="11">Desember</option>
-                    </select>
+            <label for="employee-select">Pilih Pegawai:</label>
+            <select id="employee-select" onchange="generateCalendar()">
+                <?php if ($_SESSION['level'] == "Administrator") { ?>
+                    <option value="all">Semua Pegawai</option>
+                <?php } ?>
+                <?php foreach ($employees as $employee) { ?>
+                    <option value="<?php echo $employee['nip']; ?>"><?php echo $employee['nama']; ?></option>
+                <?php } ?>
+            </select>
+
+            <label for="month-select">Bulan:</label>
+            <select id="month-select" onchange="generateCalendar()">
+                <option value="0">Januari</option>
+                <option value="1">Februari</option>
+                <option value="2">Maret</option>
+                <option value="3">April</option>
+                <option value="4">Mei</option>
+                <option value="5">Juni</option>
+                <option value="6">Juli</option>
+                <option value="7">Agustus</option>
+                <option value="8">September</option>
+                <option value="9">Oktober</option>
+                <option value="10">November</option>
+                <option value="11">Desember</option>
+            </select>
+        </div>
+
+        <div class="main-content">
+            <div class="employee-table" id="employee-table">
+                <!-- Employee table will be generated here -->
+            </div>
+            <div class="calendar">
+                <div class="days" id="days-container">
+                    <!-- Calendar will be generated here -->
                 </div>
-            <?php if ($_SESSION['level'] == "Administrator") { ?>
-                <!-- Bagian administrator -->
-                <div class="calendar">
-                    <div class="days" id="days-container">
-                        <!-- Kalender akan di-generate di sini -->
-                    </div>
-                </div>
-            <?php } else { ?>
-                <!-- Bagian user biasa -->
-                <div class="calendar">
-                    <div class="days" id="days-container">
-                        <!-- Kalender akan di-generate di sini untuk user biasa -->
-                    </div>
-                </div>
-            <?php } ?>
+            </div>
         </div>
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            generateCalendar(); // Panggil fungsi kalender saat halaman di-load
-        });
-
-        function generateCalendar() {
-            const daysContainer = document.getElementById('days-container');
-            daysContainer.innerHTML = ''; // Hapus hari sebelumnya
-
-            const monthSelect = document.getElementById('month-select');
-            const selectedMonth = parseInt(monthSelect.value);
-            const year = new Date().getFullYear();
-            const daysInMonth = getDaysInMonth(selectedMonth, year);
-
-            // Fetch data dari server untuk kegiatan
-            fetch(`get_activities.php?month=${selectedMonth+1}&year=${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    for (let day = 1; day <= daysInMonth; day++) {
-                        const dayElement = document.createElement('div');
-                        dayElement.className = 'day';
-                        dayElement.textContent = day.toString().padStart(2, '0');
-
-                        const currentDate = `${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                        const activitiesForDate = data.filter(activity => activity.date === currentDate);
-
-                        if (activitiesForDate.length > 0) {
-                            activitiesForDate.forEach(activity => {
-                                const activityInfo = document.createElement('div');
-                                activityInfo.className = 'activity-info';
-                                activityInfo.textContent = activity.nama; // Nama pegawai yang memiliki kegiatan
-
-                                const link = document.createElement('a');
-                                link.href = `tampil_kegiatan.php?date=${currentDate}`;
-                                link.appendChild(activityInfo);
-
-                                dayElement.appendChild(link);
-                                dayElement.classList.add('icon-day');
-                            });
-                        }
-
-                        daysContainer.appendChild(dayElement);
-                    }
-                })
-                .catch(error => console.error("Error fetching activities:", error));
-        }
-
-        function getDaysInMonth(month, year) {
-            return new Date(year, month + 1, 0).getDate(); // Mendapatkan jumlah hari dalam bulan
-        }
-    </script>
+    <script src="script2.js"></script>
 </body>
-
 </html>
