@@ -21,10 +21,14 @@ if (!empty($date)) {
     $formattedDate = date('d F Y', strtotime($date));
 }
 
-$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity
+$sql = "SELECT ad.activity_id as id_kegiatan, ad.date, ad.nomor_surat, ad.tanggal_surat, ad.tujuan_kegiatan, ad.jadwal, a.activity,
+        GROUP_CONCAT(p.nama SEPARATOR ', ') AS pelaksana_nama
         FROM activity_dates ad
         JOIN activities a ON ad.activity_id = a.id
-        WHERE ad.date = '$date'";
+        JOIN activity_pelaksana ap ON ad.id = ap.activity_date_id
+        JOIN pegawai p ON ap.nip = p.nip
+        WHERE ad.date = '$date'
+        GROUP BY ad.activity_id";
 
 $result = $conn->query($sql);
 
@@ -61,6 +65,7 @@ $conn->close();
                 <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
                 <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
                 <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
+                <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana_nama']); ?></p>
             </section>
 
             <div class="buttons">
