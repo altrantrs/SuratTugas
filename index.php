@@ -46,13 +46,14 @@ $employees_json = json_encode($employees);
                 <div class="filter">
                     <label for="employee-select">Pilih Pegawai:</label>
                     <select id="employee-select" onchange="filterEmployees()">
-                        <?php if ($_SESSION['level'] == "Administrator") { ?>
-                            <option value="all">Semua Pegawai</option>
-                        <?php } ?>
-                        <?php foreach ($employees as $employee) { ?>
-                            <option value="<?php echo $employee['nip']; ?>"><?php echo $employee['nama']; ?></option>
-                        <?php } ?>
-                    </select>
+    <?php if ($_SESSION['level'] == "Administrator") { ?>
+        <option value="all">Semua Pegawai</option>
+    <?php } ?>
+    <?php foreach ($employees as $employee) { ?>
+        <option value="<?php echo $employee['nama']; ?>"><?php echo $employee['nama']; ?></option>
+    <?php } ?>
+</select>
+
 
                     <label for="month-select">Bulan:</label>
                     <select id="month-select" onchange="generateCalendar()">
