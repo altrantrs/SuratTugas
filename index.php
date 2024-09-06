@@ -67,13 +67,30 @@ if ($_SESSION['level'] == "Administrator") {
         <div class="main-content">
             <div class="employee-table" id="employee-table">
                 <!-- Employee table will be generated here -->
-            </div>
-            <div class="calendar">
+
+                <?php
+                echo "<table border='1' cellspacing='0' cellpadding='5'>
+<tr bgcolor='#FFFCCC'>
+<td align='center' colspan='40'>Kegiatan di Bulan " . bulan($bulan) . " $tahun</td></tr>";?>
+<?php if ($_SESSION['level'] == "Administrator") { 
+    while ($pegawai = mysqli_fetch_array($result)) {
+    $nama = isset($pegawai['nama']) ? $pegawai['nama'] : '';
+
+    echo "<tr><td>$nama</td>"; ?>
+                    <div class="calendar">
                 <div class="days" id="days-container">
                     <!-- Calendar will be generated here -->
                 </div>
             </div>
+            </div>
+            </tr>
+     <?php
+}
+    echo "</table>"; ?>
+   
+<?php } ?> 
         </div>
+</div>
     </main>
 
     <script src="script.js"></script>
