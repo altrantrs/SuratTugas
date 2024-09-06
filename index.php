@@ -90,19 +90,16 @@ $employees_json = json_encode($employees);
                                     </td>
                                 </tr>
                             <?php } ?>
-                        <?php } else { ?>
-                            <tr>
-                                <td><?php echo $employees[0]['nama']; ?></td>
-                                <td>
-                                    <div class="calendar">
-                                        <div class="days" id="days-container-<?php echo $employees[0]['nip']; ?>">
-                                            <!-- Calendar will be generated here -->
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                         <?php } ?>
                     </table>
+                        <!-- Untuk pengguna biasa (non-administrator) -->
+<?php if ($_SESSION['level'] != "Administrator") { ?>
+    <div class="calendar">
+        <div class="days" id="days-container">
+            <!-- Kalender akan di-generate di sini -->
+        </div>
+    </div>
+<?php } ?>
                 </div>
             </div>
         </div>
