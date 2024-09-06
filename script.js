@@ -26,10 +26,8 @@ function generateCalendar(nip) {
     let daysContainer;
     if (nip) {
         daysContainer = document.getElementById(`days-container-${nip}`);
-        console.log(`Generating calendar for NIP: ${nip} using container ID: days-container-${nip}`);
     } else {
         daysContainer = document.getElementById("days-container");
-        console.log("Generating calendar for single employee (non-admin) using container ID: days-container");
     }
 
     if (!daysContainer) {
@@ -38,8 +36,15 @@ function generateCalendar(nip) {
     }
     daysContainer.innerHTML = ''; // Clear previous calendar content
 
-    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&nip=${nip ? nip : ''}`)
-    .then(response => response.json())
+    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&pelaksana=${nip ? nip : 'all'}`)
+    .then(response => {
+        // Check if the response is JSON
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    })
     .then(data => {
         console.log("Activities data fetched:", data);
         for (let day = 1; day <= daysInMonth; day++) {
@@ -67,19 +72,7 @@ function generateCalendar(nip) {
         }
     })
     .catch(error => console.error("Error fetching activities:", error));
-
-    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&nip=${nip ? nip : ''}`)
-    .then(response => {
-        console.log("Response from server:", response);
-        return response.json();
-    })
-    .then(data => {
-        console.log("Data fetched for calendar:", data);
-    })
-    .catch(error => console.error("Error fetching activities:", error));
-    
 }
-
 
 // Helper function to get the number of days in the selected month and year
 function getDaysInMonth(month, year) {
