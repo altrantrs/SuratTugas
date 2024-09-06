@@ -1,85 +1,74 @@
-document.addEventListener("DOMContentLoaded", function() {
-    generateCalendar(); // Panggil fungsi saat halaman selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    filterEmployees(); // Call the filter function on page load
 });
 
-function generateCalendar() {
-    const daysContainer = document.getElementById('days-container');
-    const employeeSelect = document.getElementById('employee-select');
-    const monthSelect = document.getElementById('month-select');
-    const selectedEmployee = employeeSelect.value;
-    const selectedMonth = parseInt(monthSelect.value);
-    const year = new Date().getFullYear();
+function filterEmployees() {
+    const selectedEmployeeNip = document.getElementById("employee-select").value;
+    const rows = document.querySelectorAll(".employee-row");
 
-    daysContainer.innerHTML = ''; // Bersihkan hari sebelumnya
-
-    if (selectedEmployee === 'all') {
-        // Jika "Semua Pegawai" dipilih, loop semua pegawai
-        employees.forEach(employee => {
-            createEmployeeCalendar(employee, selectedMonth, year);
-        });
-    } else {
-        // Tampilkan kalender untuk satu pegawai yang dipilih
-        const selectedEmp = employees.find(emp => emp.nip === selectedEmployee);
-        createEmployeeCalendar(selectedEmp, selectedMonth, year);
-    }
-}
-
-function createEmployeeCalendar(employee, selectedMonth, year) {
-    const daysInMonth = getDaysInMonth(selectedMonth, year);
-    const employeeCalendarContainer = document.createElement('div');
-    employeeCalendarContainer.className = 'employee-calendar';
-
-    // Judul kalender pegawai
-    const employeeName = document.createElement('h3');
-    employeeName.textContent = `Kegiatan: ${employee.nama || 'Pegawai'} (${employee.nip})`;
-    employeeCalendarContainer.appendChild(employeeName);
-
-    // Kontainer untuk hari-hari kalender
-    const calendarDaysContainer = document.createElement('div');
-    calendarDaysContainer.className = 'days';
-
-    employeeCalendarContainer.appendChild(calendarDaysContainer);
-
-    // Fetch kegiatan pegawai untuk bulan yang dipilih
-    fetch(`get_activities.php?month=${selectedMonth + 1}&year=${year}&nip=${employee.nip}`)
-    .then(response => response.json())
-    .then(data => {
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'day';
-            dayElement.textContent = day.toString().padStart(2, '0');
-
-            const dayOfWeek = new Date(year, selectedMonth, day).getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                dayElement.classList.add('weekend');
-            }
-
-            const currentDate = `${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-            const activitiesForDate = data.filter(activity => activity.date === currentDate);
-
-            // Jika ada kegiatan di tanggal tersebut, tampilkan icon
-            if (activitiesForDate.length > 0) {
-                const link = document.createElement('a');
-                link.href = `tampil_kegiatan.php?date=${currentDate}&nip=${employee.nip}`;
-                
-                const icon = document.createElement('i');
-                icon.className = 'fa-solid fa-check';
-                icon.style.color = 'green';
-                icon.style.fontSize = '16px';
-
-                link.appendChild(icon);
-                dayElement.appendChild(link);
-                dayElement.classList.add('icon-day');
-            }
-
-            calendarDaysContainer.appendChild(dayElement);
+    rows.forEach(row => {
+        const nip = row.getAttribute("data-nip");
+        if (selectedEmployeeNip === "all" || nip === selectedEmployeeNip) {
+            row.style.display = ""; // Show the row
+            generateCalendar(nip); // Generate calendar for the visible employee
+        } else {
+            row.style.display = "none"; // Hide the row
         }
-    })
-    .catch(error => console.error("Error fetching activities:", error));
-
-    daysContainer.appendChild(employeeCalendarContainer); // Tambahkan kalender ke kontainer utama
+    });
 }
 
+// Generate calendar based on selected employee and month
+function generateCalendar(nip) {
+    const selectedMonth = document.getElementById("month-select").value;
+    const year = new Date().getFullYear();
+    const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
+    const daysContainer = document.getElementById(`days-container-${nip}`);
+
+    if (!daysContainer) return; // If container for the selected employee doesn't exist
+
+    daysContainer.innerHTML = ''; // Clear previous calendar content
+
+    // Fetch activities from the server based on selected employee and month
+    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&nip=${nip}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Activities for employee", nip, ":", data);
+
+            // Generate calendar days and check for activities
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'day';
+                dayElement.textContent = day.toString().padStart(2, '0'); // Add day number
+
+                const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const activitiesForDate = data.filter(activity => activity.date === currentDate);
+
+                if (activitiesForDate.length > 0) {
+                    const activityIcon = document.createElement('i');
+                    activityIcon.className = 'fa-solid fa-check'; // FontAwesome check icon
+                    activityIcon.style.color = 'green';
+
+                    const link = document.createElement('a');
+                    link.href = `tampil_kegiatan.php?date=${currentDate}&nip=${nip}`;
+                    link.appendChild(activityIcon);
+
+                    dayElement.appendChild(link); // Append link to the day
+                    dayElement.classList.add('icon-day'); // Add class if activities exist
+                }
+
+                daysContainer.appendChild(dayElement); // Add day element to container
+            }
+        })
+        .catch(error => console.error("Error fetching activities:", error));
+}
+
+// Helper function to get the number of days in the selected month and year
 function getDaysInMonth(month, year) {
     return new Date(year, month + 1, 0).getDate();
+}
+
+function openForm(day, month, year) {
+    const selectedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    localStorage.setItem('selectedDate', selectedDate);
+    window.location.href = 'perjalanan_tambah.php';
 }

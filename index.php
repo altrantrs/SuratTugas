@@ -42,11 +42,10 @@ $employees_json = json_encode($employees);
 
     <main>
         <div class="content-wrapper">
-            <!-- Right Column: Calendar -->
             <div class="right-column">
                 <div class="filter">
                     <label for="employee-select">Pilih Pegawai:</label>
-                    <select id="employee-select" onchange="generateCalendar()">
+                    <select id="employee-select" onchange="filterEmployees()">
                         <?php if ($_SESSION['level'] == "Administrator") { ?>
                             <option value="all">Semua Pegawai</option>
                         <?php } ?>
@@ -71,44 +70,41 @@ $employees_json = json_encode($employees);
                         <option value="11">Desember</option>
                     </select>
                 </div>
-
-                <!-- Left Column: Employee Table -->
                 <div class="left-column">
                     <h3>Daftar Pegawai</h3>
-                    <table border='1' cellspacing='0' cellpadding='5'>
+                    <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
                         <tr bgcolor='#FFFCCC'>
                             <th>Nama Pegawai</th>
+                            <th>Kalender</th>
                         </tr>
                         <?php if ($_SESSION['level'] == "Administrator") { ?>
                             <?php foreach ($employees as $employee) { ?>
-                                <tr>
+                                <tr data-nip="<?php echo $employee['nip']; ?>" class="employee-row">
                                     <td><?php echo $employee['nama']; ?></td>
                                     <td>
                                         <div class="calendar">
-                                            <div class="days" id="days-container">
+                                            <div class="days" id="days-container-<?php echo $employee['nip']; ?>">
                                                 <!-- Calendar will be generated here -->
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-
+                            <?php } ?>
+                        <?php } else { ?>
+                            <tr>
+                                <td><?php echo $employees[0]['nama']; ?></td>
+                                <td>
+                                    <div class="calendar">
+                                        <div class="days" id="days-container-<?php echo $employees[0]['nip']; ?>">
+                                            <!-- Calendar will be generated here -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </table>
                 </div>
-            <?php } ?>
-        <?php } else { ?>
-            <tr>
-                <td><?php echo $employees[0]['nama']; ?></td>
-                <td>
-                    <div class="calendar">
-                        <div class="days" id="days-container">
-                            <!-- Calendar will be generated here -->
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        <?php } ?>
-        </table>
             </div>
-        </div>
         </div>
     </main>
 
