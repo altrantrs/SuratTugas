@@ -84,15 +84,14 @@ $employees_json = json_encode($employees);
                                 <tr>
                                     <td><?php echo $employee['nama']; ?></td>
                                     <td>
-                                    <?php foreach ($employees as $employee) { ?>
                                         <div class="calendar">
                                             <div class="days" id="days-container">
                                                 <!-- Calendar will be generated here -->
                                             </div>
                                         </div>
-                                    </td>              
-            <?php } ?>
+                                    </td>
                                 </tr>
+
                 </div>
             <?php } ?>
         <?php } else { ?>
