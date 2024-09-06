@@ -14,18 +14,13 @@ function generateCalendar() {
 
     if (selectedEmployee === 'all') {
         // Jika "Semua Pegawai" dipilih, loop semua pegawai
-        fetch(`get_all_employees.php`)
-        .then(response => response.json())
-        .then(employees => {
-            // Loop untuk setiap pegawai dan buat tabel serta kalendernya masing-masing
-            employees.forEach(employee => {
-                createEmployeeCalendar(employee, selectedMonth, year);
-            });
-        })
-        .catch(error => console.error("Error fetching employees:", error));
+        employees.forEach(employee => {
+            createEmployeeCalendar(employee, selectedMonth, year);
+        });
     } else {
         // Tampilkan kalender untuk satu pegawai yang dipilih
-        createEmployeeCalendar({ nip: selectedEmployee }, selectedMonth, year);
+        const selectedEmp = employees.find(emp => emp.nip === selectedEmployee);
+        createEmployeeCalendar(selectedEmp, selectedMonth, year);
     }
 }
 

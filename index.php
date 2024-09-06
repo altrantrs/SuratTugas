@@ -3,6 +3,7 @@ session_start();
 include_once("db_connection.php");
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
+    exit;
 }
 
 $nip = $_SESSION["nip"];
@@ -19,6 +20,9 @@ if ($_SESSION['level'] == "Administrator") {
     $result = mysqli_query($conn, "SELECT * FROM pegawai WHERE nip='$nip'");
     $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+
+// Konversi data pegawai ke format JSON agar bisa digunakan di JavaScript
+$employees_json = json_encode($employees);
 ?>
 
 <!DOCTYPE html>
@@ -97,6 +101,11 @@ if ($_SESSION['level'] == "Administrator") {
             </div>
         </div>
     </main>
+
+    <!-- Pass employee data to JavaScript -->
+    <script>
+        const employees = <?php echo $employees_json; ?>;
+    </script>
 
     <script src="script.js"></script>
 </body>
