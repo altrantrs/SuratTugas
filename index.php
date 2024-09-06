@@ -76,6 +76,6 @@ if ($_SESSION['level'] == "Administrator") {
         </div>
     </main>
 
-    <script src="script2.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

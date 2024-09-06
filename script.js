@@ -1,4 +1,3 @@
-// Generate the calendar on page load
 document.addEventListener("DOMContentLoaded", function() {
     generateCalendar(); // Call the function only once when the page loads
 });
@@ -64,17 +63,8 @@ function generateCalendar() {
 }
 
 
-
 function getDaysInMonth(month, year) {
-    if (month === 1) { // February
-        if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) {
-            return 29;
-        } else {
-            return 28;
-        }
-    } else {
-        return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-    }
+    return new Date(year, month + 1, 0).getDate(); // Get the number of days in the month
 }
 
 function openForm(day, month, year) {
