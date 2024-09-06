@@ -85,7 +85,7 @@ $employees_json = json_encode($employees);
         <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
             <td><?php echo $employee['nama']; ?></td>
             <td>
-                <div class="days" id="days-container-<?php echo $employee['nama']; ?>">
+                <div class="days" id="days-contgitainer-<?php echo $employee['nama']; ?>">
                     <!-- Calendar will be generated here -->
                 </div>
             </td>
