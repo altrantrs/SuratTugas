@@ -75,26 +75,24 @@ $employees_json = json_encode($employees);
 
                     <?php if ($_SESSION['level'] == "Administrator") { ?>
                         <h3>Daftar Pegawai</h3>
-                        <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
-                            <tr bgcolor='#FFFCCC'>
-                                <th>Nama Pegawai</th>
-                                <th>Kalender</th>
-                            </tr>
-                            <?php foreach ($employees as $employee) { ?>
-
-                                <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
-                                    <td><?php echo $employee['nama']; ?></td>
-                                    <td>
-                                        <div class="days" id="days-container-<?php echo $employee['nama']; ?>">
-                                            <!-- Calendar will be generated here -->
-                                        </div>
-
+                        <!-- Example for Administrator -->
+<table border='1' cellspacing='0' cellpadding='5' id="employee-table">
+    <tr bgcolor='#FFFCCC'>
+        <th>Nama Pegawai</th>
+        <th>Kalender</th>
+    </tr>
+    <?php foreach ($employees as $employee) { ?>
+        <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
+            <td><?php echo $employee['nama']; ?></td>
+            <td>
+                <div class="days" id="days-container-<?php echo $employee['nama']; ?>">
+                    <!-- Calendar will be generated here -->
                 </div>
-                </td>
-                </tr>
-            <?php } ?>
-        <?php } ?>
-        </table>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
+
         <!-- Untuk pengguna biasa (non-administrator) -->
         <?php if ($_SESSION['level'] != "Administrator") { ?>
             <div class="calendar">
@@ -117,22 +115,3 @@ $employees_json = json_encode($employees);
 </body>
 
 </html>
-
-<!-- script.js:26 Generating calendar for: all
-script.js:36  Container for calendar not found.
-generateCalendar @ script.js:36
-(anonymous) @ script.js:13
-filterEmployees @ script.js:9
-(anonymous) @ script.js:2
-script.js:26 Generating calendar for: all
-script.js:36  Container for calendar not found.
-generateCalendar @ script.js:36
-(anonymous) @ script.js:13
-filterEmployees @ script.js:9
-(anonymous) @ script.js:2
-script.js:26 Generating calendar for: all
-script.js:36  Container for calendar not found.
-generateCalendar @ script.js:36
-(anonymous) @ script.js:13
-filterEmployees @ script.js:9
-(anonymous) @ script.js:2 -->
