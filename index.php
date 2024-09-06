@@ -23,6 +23,7 @@ if ($_SESSION['level'] == "Administrator") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +33,7 @@ if ($_SESSION['level'] == "Administrator") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
 </head>
+
 <body>
     <?php include 'header.php'; ?>
 
@@ -67,32 +69,36 @@ if ($_SESSION['level'] == "Administrator") {
         <div class="main-content">
             <div class="employee-table" id="employee-table">
                 <!-- Employee table will be generated here -->
-
                 <?php
                 echo "<table border='1' cellspacing='0' cellpadding='5'>
-<tr bgcolor='#FFFCCC'>
-<td align='center' colspan='40'>Kegiatan di Bulan " . bulan($bulan) . " $tahun</td></tr>";?>
-<?php if ($_SESSION['level'] == "Administrator") { 
-    while ($pegawai = mysqli_fetch_array($result)) {
-    $nama = isset($pegawai['nama']) ? $pegawai['nama'] : '';
+                <tr bgcolor='#FFFCCC'></tr>"; ?>
+                <?php if ($_SESSION['level'] == "Administrator") {
+                    while ($pegawai = mysqli_fetch_array($result)) {
+                        $nama = isset($pegawai['nama']) ? $pegawai['nama'] : '';
 
-    echo "<tr><td>$nama</td>"; ?>
-                    <div class="calendar">
-                <div class="days" id="days-container">
-                    <!-- Calendar will be generated here -->
-                </div>
-            </div>
+                        echo "<tr><td>$nama</td>"; ?>
+                        <div class="calendar">
+                            <div class="days" id="days-container">
+                                <!-- Calendar will be generated here -->
+                            </div>
+                        </div>
             </div>
             </tr>
-     <?php
-}
-    echo "</table>"; ?>
-   
-<?php } ?> 
+        <?php
+                    }
+                    echo "</table>"; ?>
+    <?php } ?>
+
+    <div class="calendar">
+        <div class="days" id="days-container">
+            <!-- Calendar will be generated here -->
         </div>
-</div>
+    </div>
+        </div>
+        </div>
     </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>
