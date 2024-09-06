@@ -91,6 +91,7 @@ $employees_json = json_encode($employees);
             </td>
         </tr>
     <?php } ?>
+    <?php } ?>
 </table>
 
         <!-- Untuk pengguna biasa (non-administrator) -->
