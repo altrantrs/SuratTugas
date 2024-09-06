@@ -26,42 +26,58 @@ function generateCalendar(nip) {
     let daysContainer;
     if (nip) {
         daysContainer = document.getElementById(`days-container-${nip}`);
+        console.log(`Generating calendar for NIP: ${nip} using container ID: days-container-${nip}`);
     } else {
         daysContainer = document.getElementById("days-container");
+        console.log("Generating calendar for single employee (non-admin) using container ID: days-container");
     }
 
-    if (!daysContainer) return;
-
+    if (!daysContainer) {
+        console.error("Container for calendar not found.");
+        return;
+    }
     daysContainer.innerHTML = ''; // Clear previous calendar content
 
     fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&nip=${nip ? nip : ''}`)
-        .then(response => response.json())
-        .then(data => {
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'day';
-                dayElement.textContent = day.toString().padStart(2, '0'); 
+    .then(response => response.json())
+    .then(data => {
+        console.log("Activities data fetched:", data);
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.textContent = day.toString().padStart(2, '0');
 
-                const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                const activitiesForDate = data.filter(activity => activity.date === currentDate);
+            const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
-                if (activitiesForDate.length > 0) {
-                    const activityIcon = document.createElement('i');
-                    activityIcon.className = 'fa-solid fa-check';
-                    activityIcon.style.color = 'green';
+            if (activitiesForDate.length > 0) {
+                const activityIcon = document.createElement('i');
+                activityIcon.className = 'fa-solid fa-check';
+                activityIcon.style.color = 'green';
 
-                    const link = document.createElement('a');
-                    link.href = `tampil_kegiatan.php?date=${currentDate}&nip=${nip ? nip : ''}`;
-                    link.appendChild(activityIcon);
+                const link = document.createElement('a');
+                link.href = `tampil_kegiatan.php?date=${currentDate}&nip=${nip ? nip : ''}`;
+                link.appendChild(activityIcon);
 
-                    dayElement.appendChild(link); 
-                    dayElement.classList.add('icon-day');
-                }
-
-                daysContainer.appendChild(dayElement); 
+                dayElement.appendChild(link);
+                dayElement.classList.add('icon-day');
             }
-        })
-        .catch(error => console.error("Error fetching activities:", error));
+
+            daysContainer.appendChild(dayElement);
+        }
+    })
+    .catch(error => console.error("Error fetching activities:", error));
+
+    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&nip=${nip ? nip : ''}`)
+    .then(response => {
+        console.log("Response from server:", response);
+        return response.json();
+    })
+    .then(data => {
+        console.log("Data fetched for calendar:", data);
+    })
+    .catch(error => console.error("Error fetching activities:", error));
+    
 }
 
 
