@@ -32,6 +32,7 @@ if ($_SESSION['level'] == "Administrator") {
               WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pelaksana='$pelaksana_nip'";
 }
 
+
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
