@@ -29,10 +29,10 @@ function filterEmployees() {
 function generateCalendar(employeeName) {
     const selectedMonth = document.getElementById("month-select").value;
     const year = new Date().getFullYear();
-    const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
+    const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year); // Dapatkan jumlah hari dalam bulan
 
     console.log("Generating calendar for:", employeeName);
-    
+
     let daysContainer;
     if (employeeName) {
         daysContainer = document.getElementById(`days-container-${employeeName}`);
@@ -44,8 +44,11 @@ function generateCalendar(employeeName) {
         console.error("Container for calendar not found.");
         return;
     }
-    daysContainer.innerHTML = ''; // Clear previous calendar content
 
+    // Kosongkan container sebelum mengisi ulang kalender
+    daysContainer.innerHTML = ''; 
+
+    // Ambil aktivitas dari server
     fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&pelaksana=${employeeName ? employeeName : 'all'}`)
     .then(response => {
         if (response.ok) {
@@ -56,32 +59,35 @@ function generateCalendar(employeeName) {
     })
     .then(data => {
         console.log("Activities data fetched:", data);
+        
+        // Perulangan dari 1 hingga jumlah hari dalam bulan
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'day';
-            dayElement.textContent = day.toString().padStart(2, '0');
+            dayElement.textContent = day.toString().padStart(2, '0'); // Menampilkan tanggal dengan 2 digit
 
             const dayOfWeek = new Date(year, selectedMonth, day).getDay();
             if (dayOfWeek === 0 || dayOfWeek === 6) {
-                dayElement.classList.add('weekend');
+                dayElement.classList.add('weekend'); // Tandai akhir pekan
             }
 
+            // Format tanggal untuk membandingkan dengan aktivitas
             const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
             const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
             if (activitiesForDate.length > 0) {
                 const activityIcon = document.createElement('i');
-                activityIcon.className = 'fa-solid fa-check';
+                activityIcon.className = 'fa-solid fa-check'; // Ikon untuk aktivitas
                 
                 const link = document.createElement('a');
                 link.href = `tampil_kegiatan.php?date=${currentDate}&pelaksana=${employeeName ? employeeName : ''}`;
                 link.appendChild(activityIcon);
 
-                dayElement.appendChild(link);
-                dayElement.classList.add('icon-day');
+                dayElement.appendChild(link); // Tambahkan ikon ke hari yang sesuai
+                dayElement.classList.add('icon-day'); // Tandai hari dengan aktivitas
             }
 
-            daysContainer.appendChild(dayElement);
+            daysContainer.appendChild(dayElement); // Tambahkan hari ke kalender
         }
     })
     .catch(error => console.error("Error fetching activities:", error));
