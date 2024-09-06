@@ -76,25 +76,22 @@ $employees_json = json_encode($employees);
                     <?php if ($_SESSION['level'] == "Administrator") { ?>
                         <h3>Daftar Pegawai</h3>
                         <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
-                            <tr bgcolor='#FFFCCC'>
-                                <th>Nama Pegawai</th>
-                                <th>Kalender</th>
-                            </tr>
-                            <?php foreach ($employees as $employee) { ?>
-
-                                <tr data-nip="<?php echo $employee['nip']; ?>" class="employee-row">
-                                    <td><?php echo $employee['nama']; ?></td>
-                                    <td>
-                                        <div class="days" id="days-container-<?php echo $employee['nip']; ?>">
-                                            <!-- Calendar will be generated here -->
-                                        </div>
-
+    <tr bgcolor='#FFFCCC'>
+        <th>Nama Pegawai</th>
+        <th>Kalender</th>
+    </tr>
+    <?php foreach ($employees as $employee) { ?>
+        <tr data-name="<?php echo $employee['nama']; ?>" class="employee-row">
+            <td><?php echo $employee['nama']; ?></td>
+            <td>
+                <div class="days" id="days-container-<?php echo $employee['nama']; ?>">
+                    <!-- Calendar will be generated here -->
                 </div>
-                </td>
-                </tr>
-            <?php } ?>
-        <?php } ?>
-        </table>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
+
         <!-- Untuk pengguna biasa (non-administrator) -->
         <?php if ($_SESSION['level'] != "Administrator") { ?>
             <div class="calendar">

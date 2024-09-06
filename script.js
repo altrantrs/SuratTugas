@@ -23,6 +23,8 @@ function generateCalendar(employeeName) {
     const year = new Date().getFullYear();
     const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
 
+    console.log("Generating calendar for:", employeeName);
+    
     let daysContainer;
     if (employeeName) {
         daysContainer = document.getElementById(`days-container-${employeeName}`);
