@@ -71,38 +71,39 @@ $employees_json = json_encode($employees);
                     </select>
                 </div>
                 <div class="left-column">
-                    
-                        <?php if ($_SESSION['level'] == "Administrator") { ?>
+
+                    <?php if ($_SESSION['level'] == "Administrator") { ?>
+                        <h3>Daftar Pegawai</h3>
+                        <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
+                            <tr bgcolor='#FFFCCC'>
+                                <th>Nama Pegawai</th>
+                                <th>Kalender</th>
+                            </tr>
                             <?php foreach ($employees as $employee) { ?>
-                                <h3>Daftar Pegawai</h3>
-                    <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
-                        <tr bgcolor='#FFFCCC'>
-                            <th>Nama Pegawai</th>
-                            <th>Kalender</th>
-                        </tr>
+
                                 <tr data-nip="<?php echo $employee['nip']; ?>" class="employee-row">
                                     <td><?php echo $employee['nama']; ?></td>
                                     <td>
-                                    <div class="days" id="days-container-<?php echo $employee['nip']; ?>">
-    <!-- Calendar will be generated here -->
-</div>
-
+                                        <div class="days" id="days-container-<?php echo $employee['nip']; ?>">
+                                            <!-- Calendar will be generated here -->
                                         </div>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        <?php } ?>
-                    </table>
-                        <!-- Untuk pengguna biasa (non-administrator) -->
-<?php if ($_SESSION['level'] != "Administrator") { ?>
-    <div class="calendar">
-        <div class="days" id="days-container">
-            <!-- Kalender akan di-generate di sini -->
-        </div>
-    </div>
-<?php } ?>
+
+                </div>
+                </td>
+                </tr>
+            <?php } ?>
+        <?php } ?>
+        </table>
+        <!-- Untuk pengguna biasa (non-administrator) -->
+        <?php if ($_SESSION['level'] != "Administrator") { ?>
+            <div class="calendar">
+                <div class="days" id="days-container">
+                    <!-- Kalender akan di-generate di sini -->
                 </div>
             </div>
+        <?php } ?>
+            </div>
+        </div>
         </div>
     </main>
 
