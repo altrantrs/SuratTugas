@@ -25,6 +25,7 @@ if ($_SESSION['level'] == "Administrator") {
               WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pegawai.nama='$pelaksana_name'";
 }
 
+
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
