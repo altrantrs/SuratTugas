@@ -106,6 +106,7 @@ $employees_json = json_encode($employees);
         </div>
         </div>
     </main>
+    
 
     <!-- Pass employee data to JavaScript -->
     <script>
