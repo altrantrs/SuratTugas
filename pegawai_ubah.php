@@ -92,9 +92,6 @@ $conn->close();
                             <label for="pangkat">Pangkat</label>
                             <input type="text" id="pangkat" name="pangkat" value="<?= htmlspecialchars($pegawai['pangkat']); ?>" required>
 
-                            <label for="kendaraan_dinas">Kendaraan Dinas</label>
-                            <input type="text" id="kendaraan_dinas" name="kendaraan_dinas" value="<?= htmlspecialchars($pegawai['kendaraan_dinas']); ?>" required>
-
                             <div class="buttons">
                                 <button type="submit" class="btn btn-save">Simpan</button>
                                 <button a href="pegawai.php" class="btn btn-print">Batal</a>

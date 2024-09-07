@@ -72,9 +72,6 @@ $conn->close();
             <label for="pangkat">Pangkat</label>
             <input type="text" id="pangkat" name="pangkat" required>
 
-            <label for="kendaraan_dinas">Kendaraan Dinas</label>
-            <input type="text" id="kendaraan_dinas" name="kendaraan_dinas" required>
-
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
