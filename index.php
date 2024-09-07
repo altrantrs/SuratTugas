@@ -55,7 +55,7 @@ $employees_json = json_encode($employees);
                     </select>
 
                     <label for="month-select">Bulan:</label>
-                    <select id="month-select" onchange="generateCalendar(document.getElementById('employee-select').value)">
+                    <select id="month-select" onchange="generateCalendar()">
                         <option value="0">Januari</option>
                         <option value="1">Februari</option>
                         <option value="2">Maret</option>

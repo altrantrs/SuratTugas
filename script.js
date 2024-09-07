@@ -23,25 +23,24 @@ function generateCalendar(employeeName) {
     const year = new Date().getFullYear();
     const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
 
+    console.log("Generating calendar for:", employeeName);
+
     let daysContainer;
     if (employeeName) {
         daysContainer = document.getElementById(`days-container-${employeeName}`);
     } else {
         daysContainer = document.getElementById("days-container");
-        employeeName = employees[0].nama;  // Pegawai biasa
     }
 
     if (!daysContainer) {
         console.error("Container for calendar not found.");
         return;
     }
+    daysContainer.innerHTML = ''; // Clear previous calendar content
 
-    // Clear the previous calendar content
-    daysContainer.innerHTML = ''; // Membersihkan kalender sebelumnya
-
-    // Fetch activities from server
     fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&pelaksana=${employeeName ? employeeName : 'all'}`)
     .then(response => {
+        // Check if the response is JSON
         if (response.ok) {
             return response.json();
         } else {
@@ -58,12 +57,13 @@ function generateCalendar(employeeName) {
 
             const dayOfWeek = new Date(year, selectedMonth, day).getDay();
             if (dayOfWeek === 0 || dayOfWeek === 6) {
-                dayElement.classList.add('weekend');
+                dayElement.classList.add('weekend'); // Tandai akhir pekan
             }
 
+            // Format tanggal untuk membandingkan dengan aktivitas
             const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
             const activitiesForDate = data.filter(activity => activity.date === currentDate);
-
+            
             if (activitiesForDate.length > 0) {
                 const activityIcon = document.createElement('i');
                 activityIcon.className = 'fa-solid fa-check';
@@ -81,9 +81,10 @@ function generateCalendar(employeeName) {
     })
     .catch(error => {
         console.error("Error fetching activities:", error);
+        response.text().then(text => console.log(text)); // Tampilkan isi respons error dari server
     });
+    
 }
-
 
 // Helper function to get the number of days in the selected month and year
 function getDaysInMonth(month, year) {
