@@ -2,40 +2,57 @@ document.addEventListener("DOMContentLoaded", () => {
   filterEmployees(); // Call the filter function on page load
 });
 
-// Panggil generateCalendar setelah halaman selesai dimuat
-document.addEventListener("DOMContentLoaded", function () {
-  const selectedEmployee = document.getElementById("employee-select").value;
-  console.log("Initial employee on load:", selectedEmployee);
-
-  // Ambil bulan yang terpilih dari dropdown bulan
-  const selectedMonth = document.getElementById("month-select").value;
-
-  // Panggil generateCalendar untuk menampilkan kalender secara langsung
-  generateCalendar(selectedEmployee, selectedMonth);
-});
-
 function filterEmployees() {
-  const selectedEmployeeName = document.getElementById("employee-select").value;
-  const rows = document.querySelectorAll(".employee-row");
+    const selectedEmployeeName = document.getElementById("employee-select").value;
+    const rows = document.querySelectorAll(".employee-row");
+  
+    rows.forEach((row) => {
+      const nama = row.getAttribute("data-nama");
+      if (selectedEmployeeName === "all" || nama === selectedEmployeeName) {
+        row.style.display = ""; // Tampilkan baris
+        generateCalendar(nama); // Generate calendar untuk setiap pegawai yang visible
+      } else {
+        row.style.display = "none"; // Sembunyikan baris
+      }
+    });
+  }
+  
 
-  rows.forEach((row) => {
-    const nama = row.getAttribute("data-nama");
-    if (selectedEmployeeName === "all" || nama === selectedEmployeeName) {
-      row.style.display = ""; // Show the row
-      generateCalendar(nama); // Generate calendar for the visible employee
-    } else {
-      row.style.display = "none"; // Hide the row
-    }
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectedEmployee = document.getElementById("employee-select").value;
+    console.log("Initial employee on load:", selectedEmployee);
+  
+    // Ambil bulan yang terpilih dari dropdown bulan
+    const selectedMonth = document.getElementById("month-select").value;
+  
+    // Panggil generateCalendar hanya sekali pada halaman load
+    generateCalendar(selectedEmployee, selectedMonth);
   });
-}
-
-document
-  .getElementById("employee-select")
-  .addEventListener("change", function () {
+  
+  document.getElementById("employee-select").addEventListener("change", function () {
     const selectedEmployee = this.value;
     console.log("Selected employee:", selectedEmployee);
-    generateCalendar(selectedEmployee);
+  
+    if (selectedEmployee === "all") {
+      // Generate calendar untuk semua pegawai
+      const rows = document.querySelectorAll(".employee-row");
+      rows.forEach((row) => {
+        const nama = row.getAttribute("data-nama");
+        generateCalendar(nama); // Panggil generateCalendar untuk setiap pegawai
+      });
+    } else {
+      // Reset kontainer sebelum generate kalender baru
+      const daysContainer = document.getElementById(`days-container-${selectedEmployee.replace(/\s+/g, "_")}`);
+      if (daysContainer) {
+        daysContainer.innerHTML = ""; // Bersihkan kontainer
+      }
+  
+      // Panggil generateCalendar untuk pegawai yang dipilih
+      generateCalendar(selectedEmployee);
+    }
   });
+  
+  
 
 // Generate calendar based on selected employee and month
 function generateCalendar(employeeName) {
@@ -43,10 +60,8 @@ function generateCalendar(employeeName) {
   const year = new Date().getFullYear();
   const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
 
-  // Ubah spasi menjadi underscore agar sesuai dengan ID HTML
   const employeeId = employeeName.replace(/\s+/g, "_");
-  //   const daysContainer = document.getElementById(`days-container-${employeeId}`);
-
+  
   let daysContainer;
   if (employeeId) {
     daysContainer = document.getElementById(`days-container-${employeeId}`);
@@ -116,9 +131,6 @@ function updateCalendar() {
   if (document.getElementById("employee-select")) {
     filterEmployees();
   }
-
-  // Panggil generateCalendar dengan parameter yang tepat
-  generateCalendar(selectedEmployee);
 }
 
 // Helper function to get the number of days in the selected month and year
