@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function filterEmployees() {
     const selectedEmployeeName = document.getElementById("employee-select").value;
     const rows = document.querySelectorAll(".employee-row");
+    
 
     rows.forEach(row => {
         const nama = row.getAttribute("data-nama");
@@ -17,50 +18,39 @@ function filterEmployees() {
     });
 }
 
+document.getElementById("employee-select").addEventListener("change", function() {
+    const selectedEmployee = this.value;
+    console.log("Selected employee:", selectedEmployee);
+    generateCalendar(selectedEmployee);
+});
+
 // Generate calendar based on selected employee and month
 function generateCalendar(employeeName) {
     const selectedMonth = document.getElementById("month-select").value;
     const year = new Date().getFullYear();
     const daysInMonth = getDaysInMonth(parseInt(selectedMonth), year);
 
-    let daysContainer;
-    if (employeeName) {
-        daysContainer = document.getElementById(`days-container-${employeeName}`);
-    } else {
-        daysContainer = document.getElementById("days-container");
-        employeeName = employees[0].nama; // Ambil nama dari session (pegawai biasa)
-    }
+    // Ubah spasi menjadi underscore agar sesuai dengan ID HTML
+    const employeeId = employeeName.replace(/\s+/g, '_');
+    const daysContainer = document.getElementById(`days-container-${employeeId}`);
 
-    // Cek apakah daysContainer ditemukan
-    console.log(`Days container for employee: ${employeeName}`, daysContainer);
     if (!daysContainer) {
         console.error("Container for calendar not found for:", employeeName);
         return;
     }
+    daysContainer.innerHTML = ''; // Clear previous calendar content
 
-    daysContainer.innerHTML = ''; // Kosongkan konten kalender sebelumnya
-
-    // Fetch activities dan render kalender
-    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&pelaksana=${employeeName ? employeeName : 'all'}`)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        })
+    // Fetch activity data for selected employee
+    fetch(`get_activities.php?month=${parseInt(selectedMonth) + 1}&year=${year}&pelaksana=${employeeName}`)
+        .then(response => response.json())
         .then(data => {
             console.log("Activities data fetched:", data);
 
+            // Generate calendar days
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement('div');
                 dayElement.className = 'day';
                 dayElement.textContent = day.toString().padStart(2, '0');
-
-                const dayOfWeek = new Date(year, selectedMonth, day).getDay();
-                if (dayOfWeek === 0 || dayOfWeek === 6) {
-                    dayElement.classList.add('weekend');
-                }
 
                 const currentDate = `${year}-${(parseInt(selectedMonth) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                 const activitiesForDate = data.filter(activity => activity.date === currentDate);
@@ -70,7 +60,7 @@ function generateCalendar(employeeName) {
                     activityIcon.className = 'fa-solid fa-check';
 
                     const link = document.createElement('a');
-                    link.href = `tampil_kegiatan.php?date=${currentDate}&pelaksana=${employeeName ? employeeName : ''}`;
+                    link.href = `tampil_kegiatan.php?date=${currentDate}&pelaksana=${employeeName}`;
                     link.appendChild(activityIcon);
 
                     dayElement.appendChild(link);
@@ -84,6 +74,7 @@ function generateCalendar(employeeName) {
             console.error("Error fetching activities:", error);
         });
 }
+
 
 function updateCalendar() {
     const selectedEmployee = document.getElementById("employee-select").value;

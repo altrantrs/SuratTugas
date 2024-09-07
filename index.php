@@ -83,29 +83,32 @@ $employees_json = json_encode($employees);
                                 <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
                                     <td><?php echo $employee['nama']; ?></td>
                                     <td>
-                                    <div class="days" id="days-container-<?php echo $employee['nama']; ?>">
+                                        <div class="days" id="days-container-<?php echo str_replace(' ', '_', $employee['nama']); ?>">
                                             <!-- Calendar will be generated here -->
                                         </div>
 
+                                        <!-- Calendar will be generated here -->
                 </div>
-                </td>
-                </tr>
-            <?php } ?>
-        <?php } ?>
-        </table>
-        <!-- Untuk pengguna biasa (non-administrator) -->
-        <?php if ($_SESSION['level'] != "Administrator") { ?>
-            <div class="calendar">
-                <div class="days" id="days-container">
-                    <!-- Kalender akan di-generate di sini -->
-                </div>
+
             </div>
+            </td>
+            </tr>
         <?php } ?>
+    <?php } ?>
+    </table>
+    <!-- Untuk pengguna biasa (non-administrator) -->
+    <?php if ($_SESSION['level'] != "Administrator") { ?>
+        <div class="calendar">
+            <div class="days" id="days-container-<?php echo str_replace(' ', '_', $employee['nama']); ?>">
+                <!-- Kalender akan di-generate di sini -->
             </div>
+        </div>
+    <?php } ?>
+        </div>
         </div>
         </div>
     </main>
-    
+
 
     <!-- Pass employee data to JavaScript -->
     <script>
