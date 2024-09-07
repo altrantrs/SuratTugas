@@ -45,7 +45,7 @@ $employees_json = json_encode($employees);
             <div class="right-column">
                 <div class="filter">
                     <label for="employee-select">Pilih Pegawai:</label>
-                    <select id="employee-select" onchange="filterEmployees()">
+                    <select id="employee-select" onchange="updateCalendar()">
                         <?php if ($_SESSION['level'] == "Administrator") { ?>
                             <option value="all">Semua Pegawai</option>
                         <?php } ?>
@@ -55,7 +55,7 @@ $employees_json = json_encode($employees);
                     </select>
 
                     <label for="month-select">Bulan:</label>
-                    <select id="month-select" onchange="generateCalendar()">
+                    <select id="month-select" onchange="updateCalendar()">
                         <option value="0">Januari</option>
                         <option value="1">Februari</option>
                         <option value="2">Maret</option>
