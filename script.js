@@ -17,8 +17,8 @@ function updateCalendar() {
 function filterEmployees() {
   const selectedEmployeeName = document.getElementById("employee-select").value;
   const rows = document.querySelectorAll(".employee-row");
-  const selectedMonth = document.getElementById("month-select").value;
-
+  const selectedMonth = parseInt(document.getElementById("month-select").value, 10); 
+  
   rows.forEach((row) => {
     const nama = row.getAttribute("data-nama");
     const employeeId = nama.replace(/\s+/g, "_");
