@@ -59,7 +59,7 @@ function generateCalendar(employeeName, selectedMonth = 0) {
   daysContainer.innerHTML = ""; // Clear previous calendar content
 
   // Fetch activity data for selected employee
-  const month = (parseInt(selectedMonth) + 1).toString().padStart(2, "0");  // Proper month formatting
+  const month = (parseInt(selectedMonth) + 1).toString().padStart(2, "0");
   fetch(`get_activities.php?month=${month}&year=${year}&pelaksana=${encodeURIComponent(employeeName)}`)
       .then(response => response.json())
       .then(data => {
@@ -112,11 +112,12 @@ function getDaysInMonth(month, year) {
 function getDaysInMonth(month, year) {
   return new Date(year, month + 1, 0).getDate();
 }
-
+console.log(`Open Form dengan tanggal: ${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
 function openForm(day, month, year) {
   const selectedDate = `${year}-${month.toString().padStart(2, "0")}-${day
     .toString()
     .padStart(2, "0")}`;
   localStorage.setItem("selectedDate", selectedDate);
+  console.log("Selected Date in openForm:", selectedDate);
   window.location.href = "perjalanan_tambah.php";
 }
