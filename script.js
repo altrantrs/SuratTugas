@@ -32,10 +32,10 @@ function filterEmployees() {
     }
 
     if (selectedEmployeeName === "all" || nama === selectedEmployeeName) {
-      row.style.display = ""; // Show row
+      row.style.display = ""; 
       generateCalendar(nama, selectedMonth); // Generate calendar for each visible employee
     } else {
-      row.style.display = "none"; // Hide row
+      row.style.display = "none"; 
     }
   });
 }
@@ -56,7 +56,7 @@ function generateCalendar(employeeName, selectedMonth = 0) {
 
   // Fetch activity data for selected employee
   const month = (selectedMonth + 1).toString().padStart(2, "0"); // Adjust month for display
-  
+
   console.log('Selected Month:', selectedMonth);
   console.log('Bulan:', month);
   console.log('Tahun:', year);
@@ -117,6 +117,5 @@ function openForm(day, selectedMonth, year) {
     .padStart(2, "0")}`;
   localStorage.setItem("selectedDate", selectedDate);
   console.log("Selected Date in openForm:", selectedDate);
-  console.log(`Open Form dengan tanggal: ${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
   window.location.href = "perjalanan_tambah.php";
 }
