@@ -59,7 +59,12 @@ function generateCalendar(employeeName, selectedMonth = 0) {
   daysContainer.innerHTML = ""; // Clear previous calendar content
 
   // Fetch activity data for selected employee
-  const month = (parseInt(selectedMonth) + 1).toString().padStart(2, "0");  // Proper month formatting
+  const month = (parseInt(selectedMonth) + 1).toString().padStart(2, "0"); 
+  
+  console.log ('Bulan :', selectedMonth);
+  console.log ('Bulan :', month);
+  console.log ('Tahun :', year);
+
   fetch(`get_activities.php?month=${month}&year=${year}&pelaksana=${encodeURIComponent(employeeName)}`)
       .then(response => response.json())
       .then(data => {

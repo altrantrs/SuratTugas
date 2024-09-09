@@ -103,7 +103,7 @@ $conn->close();
 
     if (selectedDate) {
         document.getElementById('tanggal-kegiatan').value = selectedDate;
-        console.log("Tanggal yang disimpan pada tanggal-kegiatan:", selectedDate); // Tambahkan console.log di sini
+        console.log("Tanggal yang disimpan pada tanggal-kegiatan:", selectedDate); 
     }
 
     const kegiatanSelect = document.getElementById('kegiatan');
