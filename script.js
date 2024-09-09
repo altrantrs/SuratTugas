@@ -82,6 +82,8 @@ function generateCalendar(employeeName, selectedMonth = 0) {
               }
 
             const currentDate = `${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            console.log(`currentDate: ${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
+            
             const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
               if (activitiesForDate.length > 0) {
@@ -112,14 +114,9 @@ function generateCalendar(employeeName, selectedMonth = 0) {
 function getDaysInMonth(month, year) {
   return new Date(year, month + 1, 0).getDate();
 }
-
-// Helper function to get the number of days in the selected month and year
-function getDaysInMonth(month, year) {
-  return new Date(year, month + 1, 0).getDate();
-}
 console.log(`Open Form dengan tanggal: ${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
-function openForm(day, month, year) {
-  const selectedDate = `${year}-${month.toString().padStart(2, "0")}-${day
+function openForm(day, selectedMonth, year) {
+  const selectedDate = `${year}-${selectedMonth.toString().padStart(2, "0")}-${day
     .toString()
     .padStart(2, "0")}`;
   localStorage.setItem("selectedDate", selectedDate);
