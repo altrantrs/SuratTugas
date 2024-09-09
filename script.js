@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  updateCalendar(); // Call the calendar update function on page load
+  updateCalendar(); 
 });
 
 function updateCalendar() {
