@@ -53,61 +53,59 @@ function generateCalendar(employeeName, selectedMonth = 0) {
   const daysContainer = document.getElementById(`days-container-${employeeId}`);
 
   if (!daysContainer) {
-    console.error("Container for calendar not found for:", employeeName);
-    return;
+      console.error("Container for calendar not found for:", employeeName);
+      return;
   }
   daysContainer.innerHTML = ""; // Clear previous calendar content
 
   // Fetch activity data for selected employee
-  fetch(
-    `get_activities.php?month=${
-      parseInt(selectedMonth) + 1
-    }&year=${year}&pelaksana=${employeeName}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Activities data fetched:", data);
+  const month = (parseInt(selectedMonth) + 1).toString().padStart(2, "0");  // Proper month formatting
+  fetch(`get_activities.php?month=${month}&year=${year}&pelaksana=${encodeURIComponent(employeeName)}`)
+      .then(response => response.json())
+      .then(data => {
+          console.log("Activities data fetched:", data);
 
-      // Generate calendar days
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dayElement = document.createElement("div");
-        dayElement.className = "day";
-        dayElement.textContent = day.toString().padStart(2, "0");
+          // Generate calendar days
+          for (let day = 1; day <= daysInMonth; day++) {
+              const dayElement = document.createElement("div");
+              dayElement.className = "day";
+              dayElement.textContent = day.toString().padStart(2, "0");
 
-        const dayOfWeek = new Date(year, selectedMonth, day).getDay();
-        if (dayOfWeek === 0 || dayOfWeek === 6) {
-          dayElement.classList.add("weekend");
-        }
+              const dayOfWeek = new Date(year, selectedMonth, day).getDay();
+              if (dayOfWeek === 0 || dayOfWeek === 6) {
+                  dayElement.classList.add("weekend");
+              }
 
-        const currentDate = `${year}-${(parseInt(selectedMonth) + 1)
-          .toString()
-          .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-        const activitiesForDate = data.filter(
-          (activity) => activity.date === currentDate
-        );
+            const currentDate = `${year}-${(selectedMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const activitiesForDate = data.filter(activity => activity.date === currentDate);
 
-        if (activitiesForDate.length > 0) {
-          const activityIcon = document.createElement("i");
-          activityIcon.className = "fa-solid fa-check";
+              if (activitiesForDate.length > 0) {
+                  const activityIcon = document.createElement("i");
+                  activityIcon.className = "fa-solid fa-check";
 
-          const link = document.createElement("a");
-          link.href = `tampil_kegiatan.php?date=${currentDate}&pelaksana=${employeeName}`;
-          link.appendChild(activityIcon);
+                  const link = document.createElement("a");
+                  link.href = `tampil_kegiatan.php?date=${currentDate}&pelaksana=${encodeURIComponent(employeeName)}`;
+                  link.appendChild(activityIcon);
 
-          dayElement.appendChild(link);
-          dayElement.classList.add("icon-day");
-        }
+                  dayElement.appendChild(link);
+                  dayElement.classList.add("icon-day");
+              }
 
-        dayElement.addEventListener("click", () => {
-          openForm(day, selectedMonth + 1, year);
-        });
+              dayElement.addEventListener("click", () => {
+                  openForm(day, selectedMonth + 1, year);
+              });
 
-        daysContainer.appendChild(dayElement);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching activities:", error);
-    });
+              daysContainer.appendChild(dayElement);
+          }
+      })
+      .catch(error => {
+          console.error("Error fetching activities:", error);
+      });
+}
+
+// Helper function to get the number of days in the selected month and year
+function getDaysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
 }
 
 // Helper function to get the number of days in the selected month and year

@@ -324,7 +324,6 @@ echo '
             </td>
         </tr>
     </table>
-    <br><br><br>
 </body>
 </html>';
 ?>
