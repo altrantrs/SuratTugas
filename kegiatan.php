@@ -104,7 +104,7 @@ if ($isAjaxRequest) {
                         <th width='10%'>Tanggal Surat</th>
                         <th width='10%'>Tujuan</th>
                         <th width='10%'>Jadwal</th>
-                        <th width='10%'>Aksi</th>
+                        <th width='5%'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="kegiatan-table">
@@ -122,7 +122,7 @@ if ($isAjaxRequest) {
                             echo "<td>" . $row['tujuan_kegiatan'] . "</td>";
                             echo "<td>" . $row['jadwal'] . "</td>";
                             echo "<td>";
-                            echo "<a href='kegiatan_ubah.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> ";
+                            echo "<a href='kegiatan_ubah.php?id=" . $row['id'] . "' class='btn-edit'><i class='fas fa-edit'></i> Edit</a> <br>";
                             echo "<a href='#' class='btn-delete' onclick='deleteActivity(" . $row['id'] . "); return false;'><i class='fas fa-trash-alt'></i> Hapus</a>";
                             echo "</td>";
                             echo "</tr>";

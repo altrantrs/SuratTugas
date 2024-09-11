@@ -107,7 +107,7 @@ form input{
     margin-bottom: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .filter {
@@ -141,19 +141,11 @@ form input{
     color: black;
   }
   
-.row .cari h1 {
-font-size: 2em;
-}
-
-.row .cari h2 {
-margin-bottom: 20px;
-font-size: 1em;
-}
 
 .cari input {
 width: 550px;
 padding: 10px;
-
+font-size: 14px;
 }
 
 .hero-btn {
@@ -161,7 +153,7 @@ text-decoration: none;
 color: black;
 border: 1px solid black;
 padding: 10px 34px;
-font-size: 10px;
+font-size: 14px;
 background: transparent;
 }
 
@@ -245,7 +237,7 @@ select {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .btn-print {
@@ -283,6 +275,7 @@ select {
     justify-content: center;
     transition: background-color 0.3s;
     font-size: 14px;
+    margin: 2px;
 }
 
 .btn-edit {
@@ -310,7 +303,7 @@ select {
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .btn-add:hover {
@@ -332,20 +325,6 @@ select {
     top: 5px;
     right: 5px;
     font-size: 12px;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .kegiatan-section {
