@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jabatan = $_POST['jabatan'];
     $golongan = $_POST['golongan'];
     $pangkat = $_POST['pangkat'];
-    $kendaraan_dinas = $_POST['kendaraan_dinas'];
+    $level = $_POST['level'];
 
     $sql = "UPDATE pegawai 
             SET nip = '$nip', 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 jabatan = '$jabatan', 
                 golongan = '$golongan', 
                 pangkat = '$pangkat', 
-                kendaraan_dinas = '$kendaraan_dinas'
+                level = '$level'
             WHERE id = $id";
 
     if ($conn->query($sql) === TRUE) {
@@ -91,6 +91,9 @@ $conn->close();
 
                             <label for="pangkat">Pangkat</label>
                             <input type="text" id="pangkat" name="pangkat" value="<?= htmlspecialchars($pegawai['pangkat']); ?>" required>
+
+                            <input type="hidden" name="level" value="Pegawai">
+
 
                             <div class="buttons">
                                 <button type="submit" class="btn btn-save">Simpan</button>

@@ -61,7 +61,7 @@ $conn->close();
                 <p><strong>Tanggal Surat:</strong> <?= htmlspecialchars(date('d F Y', strtotime($activity['tanggal_surat']))); ?></p>
                 <p><strong>Tujuan Kegiatan:</strong> <?= htmlspecialchars($activity['tujuan_kegiatan']); ?></p>
                 <p><strong>Jadwal:</strong> <?= htmlspecialchars($activity['jadwal']); ?></p>
-                <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana']); ?></p>
+                <!-- <p><strong>Pelaksana:</strong> <?= htmlspecialchars($activity['pelaksana']); ?></p> -->
             </section>
 
             <div class="buttons">
@@ -69,7 +69,7 @@ $conn->close();
                 <button class="btn btn-report" onclick="window.location.href='https://s.id/laporanjadi';">Cetak Laporan</button>
                 <button class="btn btn-print"
                     onclick="printSuratTugas(
-                        '<?= $activity['id_kegiatan'] ?>',  // Menggunakan id_kegiatan
+                        '<?= $activity['id_kegiatan'] ?>',
                         '<?= $nip ?>',
                         '<?= date('Y', strtotime($activity['date'])) ?>',
                         '<?= date('m', strtotime($activity['date'])) ?>',
@@ -100,7 +100,7 @@ $conn->close();
                     .then(data => {
                         if (data.status === 'success') {
                             alert(data.message);
-                            window.location.href = 'index.php'; // Redirect to index.php after deletion
+                            window.location.href = 'index.php'; 
                         } else {
                             alert("Error: " + data.message);
                         }
@@ -143,26 +143,24 @@ $conn->close();
 <script>
     function calculateDateDifference(activityDate) {
         const currentDate = new Date();
-        const dateParts = activityDate.split('-'); // Assuming activityDate is in 'YYYY-MM-DD' format
+        const dateParts = activityDate.split('-'); 
         const activityDateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
 
-        // Calculate the time difference in milliseconds
         const timeDifference = currentDate - activityDateObj;
 
-        // Convert the time difference to days
         const dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
 
         return dayDifference;
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const activityDate = '<?= $activity["date"]; ?>'; // Replace with your activity date
+        const activityDate = '<?= $activity["date"]; ?>';
         const dayDifference = calculateDateDifference(activityDate);
 
         const reportButton = document.querySelector('.btn.btn-report');
 
         if (dayDifference >= 10) {
-            reportButton.disabled = true; // Disable the button
+            reportButton.disabled = true; 
             reportButton.style.cursor = 'not-allowed'
             reportButton.title = "Button disabled as it's been more than 10 days after the activity date.";
         }
