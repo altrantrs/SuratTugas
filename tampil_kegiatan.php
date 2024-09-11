@@ -66,7 +66,7 @@ $conn->close();
 
             <div class="buttons">
                 <button class="btn btn-delete" onclick="deleteActivity()"> Hapus Kegiatan </button>
-                <button class="btn btn-report" onclick="window.location.href='https://s.id/laporanjadi';">Cetak Laporan</button>
+                <button class="btn btn-report" onclick="window.location.href='https://s.id/arBiniajaoneogrSinPrWPpdLo';">Cetak Laporan</button>
                 <button class="btn btn-print"
                     onclick="printSuratTugas(
                         '<?= $activity['id_kegiatan'] ?>',
