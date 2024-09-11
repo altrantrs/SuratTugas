@@ -120,22 +120,20 @@ form input{
 
 .row {
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
     padding: 0;
-    margin-top: 10px;
     align-items: baseline;
-    width: 100%;
     flex-direction: row;
     align-content: center;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .cari,
 .tambah {
     flex: 1;
-    margin-top: 20px;
-    text-align: center;
+    margin: 10px;
+    /* text-align: center; */
 }
 
 
@@ -143,32 +141,29 @@ form input{
     color: black;
   }
   
-  .row .cari h1 {
-    font-size: 3em;
-  }
-  
-  .row .cari h2 {
-    margin-bottom: 20px;
-    font-size: 2em;
-  }
-  
-  .cari input {
-    width: 550px;
-    padding: 10px;
-    
-  }
-  
-  .hero-btn {
-    display: inline-block;
-    text-decoration: none;
-    color: black;
-    border: 1px solid black;
-    padding: 10px 34px;
-    font-size: 13px;
-    background: transparent;
-    position: relative;
-    cursor: pointer;
-  }
+.row .cari h1 {
+font-size: 2em;
+}
+
+.row .cari h2 {
+margin-bottom: 20px;
+font-size: 1em;
+}
+
+.cari input {
+width: 550px;
+padding: 10px;
+
+}
+
+.hero-btn {
+text-decoration: none;
+color: black;
+border: 1px solid black;
+padding: 10px 34px;
+font-size: 10px;
+background: transparent;
+}
 
 label {
     margin-right: 10px;
@@ -362,7 +357,6 @@ select {
 }
 
 .kegiatan-table {
-    width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
@@ -396,7 +390,7 @@ select {
 
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 700px) {
     header {
         flex-direction: column;
         align-items: flex-start;
@@ -414,7 +408,7 @@ select {
 
     .btn-edit,
     .btn-delete {
-        padding: 5px 8px;
+        padding: 5px;
         font-size: 12px;
     }
 

@@ -97,14 +97,14 @@ if ($isAjaxRequest) {
                 <thead>
                     <tr>
                         <th width='1%'>No</th>
-                        <th width='5%'>Fungsi</th>
-                        <th width='5%'>Kode Kegiatan</th>
+                        <th width='10%'>Fungsi</th>
+                        <th width='10%'>Kode Kegiatan</th>
                         <th width='10%'>Kegiatan</th>
-                        <th width='5%'>Nomor Surat</th>
-                        <th width='5%'>Tanggal Surat</th>
-                        <th width='5%'>Tujuan</th>
-                        <th width='5%'>Jadwal</th>
-                        <th width='7%'>Aksi</th>
+                        <th width='10%'>Nomor Surat</th>
+                        <th width='10%'>Tanggal Surat</th>
+                        <th width='10%'>Tujuan</th>
+                        <th width='10%'>Jadwal</th>
+                        <th width='10%'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="kegiatan-table">

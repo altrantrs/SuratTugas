@@ -80,14 +80,14 @@ if ($isAjaxRequest) {
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>NIP Baru</th>
-                        <th>NIP Lama</th>
-                        <th>Nama</th>
-                        <th>Jabatan</th>
-                        <th>Golongan</th>
-                        <th>Pangkat</th>
-                        <th>Aksi</th>
+                        <th width='1%'>No</th>
+                        <th width='10%'>NIP Baru</th>
+                        <th width='10%'>NIP Lama</th>
+                        <th width='10%'>Nama</th>
+                        <th width='10%'>Jabatan</th>
+                        <th width='10%'>Golongan</th>
+                        <th width='10%'>Pangkat</th>
+                        <th width='10%'>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="pegawai-table">
