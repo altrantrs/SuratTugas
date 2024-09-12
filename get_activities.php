@@ -7,7 +7,8 @@ $year = $_GET['year'];
 $pelaksana_name = isset($_GET['pelaksana']) ? $_GET['pelaksana'] : '';
 
 if ($_SESSION['level'] == "Administrator") {
-    if ($pelaksana_name === "all") {
+    if ($pelaksana === "all") {
+
         $query = "SELECT activity_dates.date, pegawai.nama 
                   FROM activity_dates
                   JOIN pegawai ON activity_dates.pelaksana = pegawai.nama
@@ -16,15 +17,15 @@ if ($_SESSION['level'] == "Administrator") {
         $query = "SELECT activity_dates.date, pegawai.nama 
                   FROM activity_dates
                   JOIN pegawai ON activity_dates.pelaksana = pegawai.nama
-                  WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pegawai.nama='$pelaksana_name'";
+                  WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pegawai.nama='$pelaksana'";
     }
 } else {
+    $nip = $_SESSION['nip'];
     $query = "SELECT activity_dates.date, pegawai.nama 
               FROM activity_dates
               JOIN pegawai ON activity_dates.pelaksana = pegawai.nama
-              WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pegawai.nama='$pelaksana_name'";
+              WHERE MONTH(activity_dates.date) = $month AND YEAR(activity_dates.date) = $year AND pegawai.nip='$nip'";
 }
-
 
 $result = mysqli_query($conn, $query);
 
@@ -38,7 +39,7 @@ $activities = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $activities[] = [
         'date' => $row['date'],
-        'pelaksana' => $row['nama'] // Returning the name instead of NIP
+        'pelaksana' => $row['nama'] 
     ];
 }
 

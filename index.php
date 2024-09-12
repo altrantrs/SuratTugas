@@ -45,18 +45,16 @@ $employees_json = json_encode($employees);
             <div class="right-column">
                 <div class="filter">
                     <label for="employee-select">Pilih Pegawai:</label>
-                    <select id="employee-select" onchange="filterEmployees()">
-    <?php if ($_SESSION['level'] == "Administrator") { ?>
-        <option value="all">Semua Pegawai</option>
-    <?php } ?>
-    <?php foreach ($employees as $employee) { ?>
-        <option value="<?php echo $employee['nama']; ?>"><?php echo $employee['nama']; ?></option>
-    <?php } ?>
-</select>
-
-
+                    <select id="employee-select" onchange="updateCalendar()">
+                        <?php if ($_SESSION['level'] == "Administrator") { ?>
+                            <option value="all">Semua Pegawai</option>
+                        <?php } ?>
+                        <?php foreach ($employees as $employee) { ?>
+                            <option value="<?php echo $employee['nama']; ?>"><?php echo $employee['nama']; ?></option>
+                        <?php } ?>
+                  </select>
                     <label for="month-select">Bulan:</label>
-                    <select id="month-select" onchange="generateCalendar()">
+                    <select id="month-select" onchange="updateCalendar()">
                         <option value="0">Januari</option>
                         <option value="1">Februari</option>
                         <option value="2">Maret</option>
@@ -75,34 +73,35 @@ $employees_json = json_encode($employees);
 
                     <?php if ($_SESSION['level'] == "Administrator") { ?>
                         <h3>Daftar Pegawai</h3>
-                        <!-- Example for Administrator -->
-<table border='1' cellspacing='0' cellpadding='5' id="employee-table">
-    <tr bgcolor='#FFFCCC'>
-        <th>Nama Pegawai</th>
-        <th>Kalender</th>
-    </tr>
-    <?php foreach ($employees as $employee) { ?>
-        <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
-            <td><?php echo $employee['nama']; ?></td>
-            <td>
-                <div class="days" id="days-contgitainer-<?php echo $employee['nama']; ?>">
-                    <!-- Calendar will be generated here -->
+                        <table border='1' cellspacing='0' cellpadding='5' id="employee-table">
+                            <tr bgcolor='#FFFCCC'>
+                                <th>Nama Pegawai</th>
+                                <th>Kalender</th>
+                            </tr>
+                            <?php foreach ($employees as $employee) { ?>
+                                <tr data-nama="<?php echo $employee['nama']; ?>" class="employee-row">
+                                    <td><?php echo $employee['nama']; ?></td>
+                                    <td>
+                                        <div class="days" id="days-container-<?php echo str_replace(' ', '_', $employee['nama']); ?>">
+                                            <!-- Calendar will be generated here -->
+                                        </div>
+                                        <!-- Calendar will be generated here -->
                 </div>
+            </div>
             </td>
-        </tr>
-    <?php } ?>
-    <?php } ?>
-</table>
-
-        <!-- Untuk pengguna biasa (non-administrator) -->
-        <?php if ($_SESSION['level'] != "Administrator") { ?>
-            <div class="calendar">
-                <div class="days" id="days-container">
-                    <!-- Kalender akan di-generate di sini -->
-                </div>
-            </div>
+            </tr>
         <?php } ?>
+    <?php } ?>
+    </table>
+    <!-- Untuk pengguna biasa (non-administrator) -->
+    <?php if ($_SESSION['level'] != "Administrator") { ?>
+        <div class="calendar">
+            <div class="days" id="days-container-<?php echo str_replace(' ', '_', $employee['nama']); ?>">
+                <!-- Kalender akan di-generate di sini -->
             </div>
+        </div>
+    <?php } ?>
+        </div>
         </div>
         </div>
     </main>

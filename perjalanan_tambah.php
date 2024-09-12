@@ -98,60 +98,61 @@ $conn->close();
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('activity-form');
-            const selectedDate = localStorage.getItem('selectedDate');
+    const form = document.getElementById('activity-form');
+    const selectedDate = localStorage.getItem('selectedDate');
 
-            if (selectedDate) {
-                document.getElementById('tanggal-kegiatan').value = selectedDate;
-            }
+    if (selectedDate) {
+        document.getElementById('tanggal-kegiatan').value = selectedDate;
+        console.log("Tanggal yang disimpan pada tanggal-kegiatan:", selectedDate); 
+    }
 
-            const kegiatanSelect = document.getElementById('kegiatan');
+    const kegiatanSelect = document.getElementById('kegiatan');
 
-            kegiatanSelect.addEventListener('change', function() {
-                const kegiatanId = this.value;
+    kegiatanSelect.addEventListener('change', function() {
+        const kegiatanId = this.value;
 
-                if (kegiatanId) {
-                    fetch('get_kegiatan_details.php?id=' + encodeURIComponent(kegiatanId))
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                document.getElementById('nomor-surat').value = data.nomor_surat || '';
-                                document.getElementById('tanggal-surat').value = data.tanggal_surat || '';
-                                document.getElementById('tujuan-kegiatan').value = data.tujuan_kegiatan || '';
-                                document.getElementById('jadwal').value = data.jadwal || '';
-                            } else {
-                                alert("Error: " + data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+        if (kegiatanId) {
+            fetch('get_kegiatan_details.php?id=' + encodeURIComponent(kegiatanId))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('nomor-surat').value = data.nomor_surat || '';
+                        document.getElementById('tanggal-surat').value = data.tanggal_surat || '';
+                        document.getElementById('tujuan-kegiatan').value = data.tujuan_kegiatan || '';
+                        document.getElementById('jadwal').value = data.jadwal || '';
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            document.getElementById('nomor-surat').value = '';
+            document.getElementById('tanggal-surat').value = '';
+            document.getElementById('tujuan-kegiatan').value = '';
+            document.getElementById('jadwal').value = '';
+        }
+    });
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        fetch('perjalanan_simpan.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    window.location.href = 'tampil_kegiatan.php?date=' + encodeURIComponent(selectedDate);
                 } else {
-                    document.getElementById('nomor-surat').value = '';
-                    document.getElementById('tanggal-surat').value = '';
-                    document.getElementById('tujuan-kegiatan').value = '';
-                    document.getElementById('jadwal').value = '';
+                    alert("Error: " + data.message);
                 }
-            });
-
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const formData = new FormData(form);
-
-                fetch('perjalanan_simpan.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            window.location.href = 'tampil_kegiatan.php?date=' + encodeURIComponent(selectedDate);
-                        } else {
-                            alert("Error: " + data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
-        });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
     </script>
 </body>
 </html>

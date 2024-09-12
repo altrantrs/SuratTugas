@@ -23,9 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kendaraan_dinas = $_POST['kendaraan_dinas'];
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $level = $_POST['level'];
 
-    $sql = "INSERT INTO pegawai (nip, nip_lama, nama, jabatan, golongan, pangkat, kendaraan_dinas, username, password) 
-            VALUES ('$nip', '$nip_lama', '$nama', '$jabatan', '$golongan', '$pangkat', '$kendaraan_dinas', '$username', '$password')";
+    $sql = "INSERT INTO pegawai (nip, nip_lama, nama, jabatan, golongan, pangkat, username, password, level) 
+            VALUES ('$nip', '$nip_lama', '$nama', '$jabatan', '$golongan', '$pangkat', '$username', '$password', '$level')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Pegawai berhasil ditambahkan!'); window.location.href = 'pegawai.php';</script>";
@@ -72,14 +73,13 @@ $conn->close();
             <label for="pangkat">Pangkat</label>
             <input type="text" id="pangkat" name="pangkat" required>
 
-            <label for="kendaraan_dinas">Kendaraan Dinas</label>
-            <input type="text" id="kendaraan_dinas" name="kendaraan_dinas" required>
-
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password</label>
             <input type="text" id="password" name="password" required>
+
+            <input type="hidden" name="level" value="Pegawai">
 
             <button type="submit" class="btn btn-save">Simpan</button>
         </form>
