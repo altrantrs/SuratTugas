@@ -19,7 +19,7 @@ $tujuan = isset($_POST['tujuan']) ? $_POST['tujuan'] : '';
 $periode = isset($_POST['periode']) ? $_POST['periode'] : '';
 
 header("Content-type: application/vnd.ms-word");
-header("Content-Disposition: attachment;Filename=Laporan".$nama."-".$tanggal.$bulan.$tahun.".doc");
+header("Content-Disposition: attachment;Filename=Surat Tugas".$nama."-".$tanggal.$bulan.$tahun.".doc");
 
 /// Fetching data from settings
 $sql_ttd = "SELECT * FROM settings";
@@ -43,7 +43,7 @@ $namattd = $ttd2 ? $ttd2['nama'] : 'Rahmad Iswanto, SST., M.Si';
 $jabatan = $ttd2 ? $ttd2['jabatan'] : '';
 
 // Set default value for mengetahui if jabatan is not Kepala
-$mengetahui = $jabatan == 'Kepala' ? "Kepala Badan Pusat Statistik" : "Kepala Badan Pusat Statistik";
+$mengetahui = $jabatan = "Kepala Badan Pusat Statistik";
 
 // Fetching data from pegawai
 $sql_peg = "SELECT * FROM pegawai WHERE nip='$nip'";
@@ -97,20 +97,18 @@ if (!$prj) {
     die("No data found for activity dates.");
 }
 
-// Menghapus angka nol di depan tanggal
-$cleanedDate = ltrim($tanggal, '0');
+list($tahunSurat, $bulanSurat, $tanggalSurat) = explode('-', $tglsurat);
 
-// Membuat array untuk nama-nama bulan
+$cleanedDate = ltrim($tanggalSurat, '0');
+
 $months = [
     '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', '05' => 'Mei',
     '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', '09' => 'September', '10' => 'Oktober',
     '11' => 'November', '12' => 'Desember'
 ];
 
-// Mengubah bulan menjadi nama bulan
-$bulanNama = $months[$bulan] ?? '';
+$bulanNama = $months[$bulanSurat] ?? '';
 
-// Format tanggal dan bulan
 $tanggalFormat = $cleanedDate . ' ' . $bulanNama . ' ' . $tahun;
 
 echo '
@@ -230,12 +228,11 @@ echo '
 
     <table border="0" width="100%">
         <tr>
-            <td width="60%"></td>
-            <td width="40%">
+            <td width="55%"></td>
+            <td width="45%">
                 <center>
                     Wonogiri, '.htmlspecialchars($tanggalFormat).'<br>
                     '.htmlspecialchars($mengetahui).' Kabupaten Wonogiri<br>
-                    Nomor SP: '.htmlspecialchars($nosurat).'
                     <br><br><br><br><br>
                     '.htmlspecialchars($namattd).'
                 </center>
@@ -313,8 +310,8 @@ echo '
     <br>
     <table border="0" width="100%">
         <tr>
-            <td width="60%"></td>
-            <td width="40%">
+            <td width="55%"></td>
+            <td width="45%">
                 <center>
                     Mengetahui,<br>
                     '.$mengetahui.'<br>

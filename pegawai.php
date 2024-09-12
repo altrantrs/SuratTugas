@@ -82,7 +82,7 @@ if ($isAjaxRequest) {
                     <tr>
                         <th width='1%'>No</th>
                         <th width='10%'>NIP Baru</th>
-                        <th width='10%'>NIP Lama</th>
+                        <!-- <th width='10%'>NIP Lama</th> -->
                         <th width='10%'>Nama</th>
                         <th width='10%'>Jabatan</th>
                         <th width='10%'>Golongan</th>
@@ -98,7 +98,7 @@ if ($isAjaxRequest) {
                             echo "<tr>";
                             echo "<td>" . $id++ . "</td>";
                             echo "<td>" . htmlspecialchars($row['nip']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['nip_lama']) . "</td>";
+                            // echo "<td>" . htmlspecialchars($row['nip_lama']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['jabatan']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['golongan']) . "</td>";
