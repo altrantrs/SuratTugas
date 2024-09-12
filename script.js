@@ -106,6 +106,7 @@ function generateCalendar(employeeName, selectedMonth = 0) {
     });
 }
 
+
 // Helper function to get the number of days in the selected month and year
 function getDaysInMonth(month, year) {
   return new Date(year, month + 1, 0).getDate();

@@ -4,10 +4,11 @@ include_once("db_connection.php");
 
 $month = $_GET['month'];
 $year = $_GET['year'];
-$pelaksana = isset($_GET['pelaksana']) ? $_GET['pelaksana'] : '';
+$pelaksana_name = isset($_GET['pelaksana']) ? $_GET['pelaksana'] : '';
 
 if ($_SESSION['level'] == "Administrator") {
     if ($pelaksana === "all") {
+
         $query = "SELECT activity_dates.date, pegawai.nama 
                   FROM activity_dates
                   JOIN pegawai ON activity_dates.pelaksana = pegawai.nama

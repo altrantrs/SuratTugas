@@ -52,8 +52,7 @@ $employees_json = json_encode($employees);
                         <?php foreach ($employees as $employee) { ?>
                             <option value="<?php echo $employee['nama']; ?>"><?php echo $employee['nama']; ?></option>
                         <?php } ?>
-                    </select>
-
+                  </select>
                     <label for="month-select">Bulan:</label>
                     <select id="month-select" onchange="updateCalendar()">
                         <option value="0">Januari</option>
@@ -86,10 +85,8 @@ $employees_json = json_encode($employees);
                                         <div class="days" id="days-container-<?php echo str_replace(' ', '_', $employee['nama']); ?>">
                                             <!-- Calendar will be generated here -->
                                         </div>
-
                                         <!-- Calendar will be generated here -->
                 </div>
-
             </div>
             </td>
             </tr>
@@ -108,7 +105,6 @@ $employees_json = json_encode($employees);
         </div>
         </div>
     </main>
-
 
     <!-- Pass employee data to JavaScript -->
     <script>
